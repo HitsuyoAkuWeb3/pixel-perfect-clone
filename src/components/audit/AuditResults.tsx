@@ -227,6 +227,7 @@ const AuditResults = ({ scores }: AuditResultsProps) => {
               href="https://example.com/brickhouse-collective"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => analytics.ctaClicked("Collective Card", "https://example.com/brickhouse-collective")}
               className="bg-foreground/[0.04] border border-foreground/[0.08] rounded-xl p-5 text-left hover:border-primary/40 transition-colors block"
             >
               <div className="text-2xl mb-2">🔥</div>
