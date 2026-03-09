@@ -17,6 +17,7 @@ import MyBricks from "./pages/MyBricks";
 import BrickDetail from "./pages/BrickDetail";
 import DailyRitual from "./pages/DailyRitual";
 import NotFound from "./pages/NotFound";
+import FloatingNav from "./components/FloatingNav";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <FloatingNav />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/life-audit" element={<LifeAudit />} />
