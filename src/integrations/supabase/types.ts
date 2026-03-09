@@ -114,7 +114,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      is_recent_lead: { Args: { lead_created_at: string }; Returns: boolean }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
