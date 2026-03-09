@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { areas, areaInsights, getLevel } from "@/data/auditContent";
+import { analytics } from "@/lib/analytics";
 
 interface AuditResultsProps {
   scores: number[];
