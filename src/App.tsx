@@ -13,6 +13,8 @@ import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import Onboarding from "./pages/Onboarding";
+import MyBricks from "./pages/MyBricks";
+import BrickDetail from "./pages/BrickDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
