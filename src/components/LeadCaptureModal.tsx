@@ -52,6 +52,7 @@ const LeadCaptureModal = ({
   onOpenChange,
   variant,
 }: LeadCaptureModalProps) => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<LeadData>({
     name: "",
     email: "",
