@@ -157,6 +157,42 @@ export type Database = {
         }
         Relationships: []
       }
+      passion_picks: {
+        Row: {
+          affirmation: string | null
+          created_at: string
+          goal_text: string | null
+          id: string
+          photo_url: string | null
+          song_title: string | null
+          song_url: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          affirmation?: string | null
+          created_at?: string
+          goal_text?: string | null
+          id?: string
+          photo_url?: string | null
+          song_title?: string | null
+          song_url?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          affirmation?: string | null
+          created_at?: string
+          goal_text?: string | null
+          id?: string
+          photo_url?: string | null
+          song_title?: string | null
+          song_url?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           audit_scores: Json | null

@@ -70,7 +70,7 @@ const Dashboard = () => {
     { icon: Blocks, label: "My Bricks", link: "/bricks", subtitle: "Explore →", accent: "text-primary", iconBg: "bg-primary/15" },
     { icon: Sunrise, label: "Daily Ritual", link: "/daily-ritual", subtitle: todayComplete === 3 ? "Done ✓" : "Start →", accent: "text-accent", iconBg: "bg-accent/15" },
     { icon: Diamond, label: "Affirmations", link: "/affirmations", subtitle: "Explore →", accent: "text-primary", iconBg: "bg-primary/15" },
-    { icon: Flame, label: "Passion Pick", accent: "text-destructive", iconBg: "bg-destructive/10" },
+    { icon: Flame, label: "Passion Pick", link: "/passion-pick", subtitle: "Explore →", accent: "text-destructive", iconBg: "bg-destructive/10" },
     { icon: CalendarClock, label: "Scheduler", accent: "text-accent", iconBg: "bg-accent/10" },
     { icon: Sparkles, label: "Goddess Rx", accent: "text-secondary", iconBg: "bg-secondary/15" },
   ];
