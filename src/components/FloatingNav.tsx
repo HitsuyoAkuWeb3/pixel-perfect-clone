@@ -65,7 +65,7 @@ const FloatingNav = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[99] bg-card/95 backdrop-blur-xl border border-border rounded-2xl p-5 min-w-[220px] shadow-[0_0_40px_hsl(var(--primary)/0.2)]"
+            className="fixed top-20 right-6 z-[99] bg-card/95 backdrop-blur-xl border border-border rounded-2xl p-5 min-w-[220px] shadow-[0_0_40px_hsl(var(--primary)/0.2)]"
           >
             <img src={logo} alt="Brickhouse" className="w-24 mx-auto mb-4 opacity-80" />
 
@@ -108,7 +108,7 @@ const FloatingNav = () => {
       {/* Floating pill trigger */}
       <motion.button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] w-14 h-14 rounded-full bg-gradient-pink border border-primary/30 flex items-center justify-center shadow-[0_0_30px_hsl(var(--primary)/0.4)] hover:shadow-[0_0_40px_hsl(var(--primary)/0.6)] transition-shadow"
+        className="fixed top-5 right-6 z-[100] w-12 h-12 rounded-full bg-gradient-pink border border-primary/30 flex items-center justify-center shadow-[0_0_30px_hsl(var(--primary)/0.4)] hover:shadow-[0_0_40px_hsl(var(--primary)/0.6)] transition-shadow"
         whileTap={{ scale: 0.9 }}
       >
         <AnimatePresence mode="wait">
