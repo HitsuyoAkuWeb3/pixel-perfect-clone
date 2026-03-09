@@ -64,7 +64,7 @@ const LeadCaptureModal = ({
 
   const { title, description, cta } = copy[variant];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = leadSchema.safeParse(formData);
 
@@ -79,7 +79,22 @@ const LeadCaptureModal = ({
     }
 
     setErrors({});
-    // TODO: send to backend
+    setSubmitting(true);
+
+    const { error } = await supabase.from("leads").insert({
+      name: result.data.name,
+      email: result.data.email,
+      phone: result.data.phone || null,
+      variant,
+    });
+
+    setSubmitting(false);
+
+    if (error) {
+      setErrors({ email: "Something went wrong. Please try again." });
+      return;
+    }
+
     setSubmitted(true);
   };
 
