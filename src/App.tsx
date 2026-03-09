@@ -17,6 +17,9 @@ import MyBricks from "./pages/MyBricks";
 import BrickDetail from "./pages/BrickDetail";
 import DailyRitual from "./pages/DailyRitual";
 import Affirmations from "./pages/Affirmations";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import FloatingNav from "./components/FloatingNav";
 
@@ -85,6 +88,9 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/contact" element={<Contact />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
