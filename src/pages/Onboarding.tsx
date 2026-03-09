@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useOnboardingStore, type Step } from "@/store/onboardingStore";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
@@ -14,8 +15,6 @@ import {
 } from "@/components/ui/popover";
 import logo from "@/assets/brickhouse-logo.png";
 import { toast } from "sonner";
-
-type Step = "birthdate" | "goals" | "transformation";
 
 const transformations = [
   {
@@ -61,10 +60,7 @@ const stepVariants = {
 const Onboarding = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [step, setStep] = useState<Step>("birthdate");
-  const [birthDate, setBirthDate] = useState<Date>();
-  const [goals, setGoals] = useState(["", "", ""]);
-  const [transformation, setTransformation] = useState("");
+  const { step, birthDate, goals, transformation, setStep, setBirthDate, setGoal, setTransformation } = useOnboardingStore();
   const [submitting, setSubmitting] = useState(false);
 
   // Import audit scores if user completed audit before signup
@@ -107,11 +103,7 @@ const Onboarding = () => {
   }, [user]);
 
   const updateGoal = (index: number, value: string) => {
-    setGoals((prev) => {
-      const next = [...prev];
-      next[index] = value;
-      return next;
-    });
+    setGoal(index, value);
   };
 
   const canProceedGoals = goals.filter((g) => g.trim().length > 0).length >= 1;
