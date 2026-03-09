@@ -59,8 +59,17 @@ const Dashboard = () => {
       </p>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-lg w-full mb-10">
+        <Link
+          to="/bricks"
+          className="bg-gradient-card border border-border rounded-xl p-4 text-center hover:border-primary/40 transition-all hover:shadow-[0_0_20px_hsl(var(--primary)/0.15)]"
+        >
+          <div className="text-2xl mb-2">🧱</div>
+          <div className="font-display text-xs tracking-wider">My Bricks</div>
+          <div className="text-[9px] text-accent mt-1 uppercase tracking-wider">
+            Explore →
+          </div>
+        </Link>
         {[
-          { icon: "🧱", label: "My Bricks" },
           { icon: "🌅", label: "Daily Ritual" },
           { icon: "💎", label: "Affirmations" },
           { icon: "🔥", label: "Passion Pick" },
