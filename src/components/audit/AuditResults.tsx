@@ -245,6 +245,7 @@ const AuditResults = ({ scores }: AuditResultsProps) => {
             href="https://example.com/mini-bundle"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => analytics.ctaClicked("Start Building CTA", "https://example.com/mini-bundle")}
             className="inline-block bg-gradient-pink text-foreground font-body font-extrabold text-[13px] tracking-[2px] uppercase px-12 py-[18px] border-none cursor-pointer [clip-path:polygon(8px_0%,100%_0%,calc(100%-8px)_100%,0%_100%)] hover:opacity-90 hover:-translate-y-0.5 transition-all mb-4"
           >
             Start Building →
