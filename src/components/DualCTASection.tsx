@@ -39,7 +39,7 @@ const DualCTASection = () => {
               </span>
             </div>
 
-            <button className="w-full py-4 px-6 rounded-xl bg-gradient-pink font-body font-semibold tracking-wide transition-all duration-300 hover:scale-[1.02] animate-pulse-glow text-foreground">
+            <button className="w-full py-4 px-6 rounded-xl bg-gradient-pink font-body font-semibold tracking-wide transition-all duration-300 hover:scale-[1.02] text-foreground">
               Start My Audit →
             </button>
           </div>
