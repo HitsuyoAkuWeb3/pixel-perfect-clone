@@ -14,6 +14,35 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_results: {
+        Row: {
+          created_at: string
+          id: string
+          lead_id: string | null
+          scores: Json
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          lead_id?: string | null
+          scores: Json
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          lead_id?: string | null
+          scores?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_results_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leads: {
         Row: {
           created_at: string

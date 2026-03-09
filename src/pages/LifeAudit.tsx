@@ -1,0 +1,112 @@
+import { useState, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { areas } from "@/data/auditContent";
+import AuditCover from "@/components/audit/AuditCover";
+import AuditIntro from "@/components/audit/AuditIntro";
+import AuditProgress from "@/components/audit/AuditProgress";
+import AuditQuestion from "@/components/audit/AuditQuestion";
+import AuditResults from "@/components/audit/AuditResults";
+
+type Screen = "cover" | "intro" | "quiz" | "results";
+
+const LifeAudit = () => {
+  const [searchParams] = useSearchParams();
+  const leadId = searchParams.get("lead");
+
+  const [screen, setScreen] = useState<Screen>("cover");
+  const [currentArea, setCurrentArea] = useState(0);
+  const [scores, setScores] = useState<number[]>([5, 5, 5, 5, 5]);
+
+  const goToScreen = useCallback((s: Screen) => {
+    setScreen(s);
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handleScoreChange = useCallback(
+    (value: number) => {
+      setScores((prev) => {
+        const next = [...prev];
+        next[currentArea] = value;
+        return next;
+      });
+    },
+    [currentArea]
+  );
+
+  const handleNext = useCallback(() => {
+    if (currentArea < areas.length - 1) {
+      setCurrentArea((c) => c + 1);
+      window.scrollTo(0, 0);
+    } else {
+      // Save results then show
+      saveResults();
+      goToScreen("results");
+    }
+  }, [currentArea, scores, leadId]);
+
+  const handleBack = useCallback(() => {
+    if (currentArea > 0) {
+      setCurrentArea((c) => c - 1);
+      window.scrollTo(0, 0);
+    }
+  }, [currentArea]);
+
+  const saveResults = async () => {
+    const scoreData = {
+      self: scores[0],
+      love: scores[1],
+      money: scores[2],
+      purpose: scores[3],
+      joy: scores[4],
+    };
+
+    await supabase.from("audit_results").insert({
+      lead_id: leadId || null,
+      scores: scoreData,
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-background overflow-x-hidden">
+      {screen === "cover" && (
+        <AuditCover onStart={() => goToScreen("intro")} />
+      )}
+
+      {screen === "intro" && (
+        <AuditIntro onStart={() => goToScreen("quiz")} />
+      )}
+
+      {screen === "quiz" && (
+        <div className="min-h-screen flex flex-col items-center px-6 py-10">
+          {/* Header */}
+          <div className="flex items-center justify-center gap-2 text-[10px] tracking-[3px] text-foreground/30 uppercase mb-0">
+            <span className="flex-1 max-w-[80px] h-px bg-foreground/[0.08]" />
+            Brickhouse Life Audit
+            <span className="flex-1 max-w-[80px] h-px bg-foreground/[0.08]" />
+          </div>
+
+          <div className="max-w-[640px] w-full mt-6">
+            <AuditProgress current={currentArea} total={areas.length} />
+            <AuditQuestion
+              key={currentArea}
+              area={areas[currentArea]}
+              index={currentArea}
+              total={areas.length}
+              score={scores[currentArea]}
+              onScoreChange={handleScoreChange}
+              onNext={handleNext}
+              onBack={handleBack}
+              isFirst={currentArea === 0}
+              isLast={currentArea === areas.length - 1}
+            />
+          </div>
+        </div>
+      )}
+
+      {screen === "results" && <AuditResults scores={scores} />}
+    </div>
+  );
+};
+
+export default LifeAudit;
