@@ -18,6 +18,7 @@ import BrickDetail from "./pages/BrickDetail";
 import DailyRitual from "./pages/DailyRitual";
 import Affirmations from "./pages/Affirmations";
 import PassionPick from "./pages/PassionPick";
+import GoddessRx from "./pages/GoddessRx";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Contact from "./pages/Contact";
@@ -94,6 +95,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <PassionPick />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/goddess-rx"
+              element={
+                <ProtectedRoute>
+                  <GoddessRx />
                 </ProtectedRoute>
               }
             />

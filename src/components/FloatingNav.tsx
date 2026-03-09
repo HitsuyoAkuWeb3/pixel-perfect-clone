@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Home, LayoutDashboard, BookOpen, Sunrise, ClipboardCheck, LogOut, Sparkles, Flame } from "lucide-react";
+import { Menu, X, Home, LayoutDashboard, BookOpen, Sunrise, ClipboardCheck, LogOut, Sparkles, Flame, Gem } from "lucide-react";
 import logo from "@/assets/brickhouse-logo.png";
 
 const publicLinks = [
@@ -17,6 +17,7 @@ const authedLinks = [
   { to: "/daily-ritual", label: "Daily Ritual", icon: Sunrise },
   { to: "/affirmations", label: "Affirmations", icon: Sparkles },
   { to: "/passion-pick", label: "Passion Pick", icon: Flame },
+  { to: "/goddess-rx", label: "Goddess Rx", icon: Gem },
 ];
 
 const FloatingNav = () => {

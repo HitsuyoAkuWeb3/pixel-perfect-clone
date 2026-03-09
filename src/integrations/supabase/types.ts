@@ -106,6 +106,48 @@ export type Database = {
         }
         Relationships: []
       }
+      goddess_prescriptions: {
+        Row: {
+          colors: Json
+          created_at: string
+          crystals: Json
+          element: string | null
+          id: string
+          mantra: string | null
+          ruling_planet: string | null
+          spiritual_tools: Json
+          updated_at: string
+          user_id: string
+          zodiac_sign: string
+        }
+        Insert: {
+          colors?: Json
+          created_at?: string
+          crystals?: Json
+          element?: string | null
+          id?: string
+          mantra?: string | null
+          ruling_planet?: string | null
+          spiritual_tools?: Json
+          updated_at?: string
+          user_id: string
+          zodiac_sign: string
+        }
+        Update: {
+          colors?: Json
+          created_at?: string
+          crystals?: Json
+          element?: string | null
+          id?: string
+          mantra?: string | null
+          ruling_planet?: string | null
+          spiritual_tools?: Json
+          updated_at?: string
+          user_id?: string
+          zodiac_sign?: string
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           created_at: string

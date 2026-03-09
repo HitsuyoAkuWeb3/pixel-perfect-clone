@@ -72,7 +72,7 @@ const Dashboard = () => {
     { icon: Diamond, label: "Affirmations", link: "/affirmations", subtitle: "Explore →", accent: "text-primary", iconBg: "bg-primary/15" },
     { icon: Flame, label: "Passion Pick", link: "/passion-pick", subtitle: "Explore →", accent: "text-destructive", iconBg: "bg-destructive/10" },
     { icon: CalendarClock, label: "Scheduler", accent: "text-accent", iconBg: "bg-accent/10" },
-    { icon: Sparkles, label: "Goddess Rx", accent: "text-secondary", iconBg: "bg-secondary/15" },
+    { icon: Sparkles, label: "Goddess Rx", link: "/goddess-rx", subtitle: "Explore →", accent: "text-secondary", iconBg: "bg-secondary/15" },
   ];
 
   return (
