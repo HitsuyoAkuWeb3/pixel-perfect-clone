@@ -49,6 +49,10 @@ const LifeAudit = () => {
     } else {
       // Save results then show
       saveResults();
+      analytics.auditCompleted({
+        self: scores[0], love: scores[1], money: scores[2],
+        purpose: scores[3], joy: scores[4],
+      });
       goToScreen("results");
     }
   }, [currentArea, scores, leadId]);

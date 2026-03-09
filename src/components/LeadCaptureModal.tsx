@@ -99,6 +99,7 @@ const LeadCaptureModal = ({
     }
 
     setSubmitted(true);
+    analytics.leadCaptured(variant);
 
     if (variant === "audit") {
       // Get the inserted lead's id for linking audit results
