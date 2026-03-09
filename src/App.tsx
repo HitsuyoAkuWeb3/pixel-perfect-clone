@@ -107,6 +107,14 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/scheduler"
+              element={
+                <ProtectedRoute>
+                  <Scheduler />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/contact" element={<Contact />} />
