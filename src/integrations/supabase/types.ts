@@ -274,6 +274,45 @@ export type Database = {
         }
         Relationships: []
       }
+      reminders: {
+        Row: {
+          category: string
+          created_at: string
+          days_of_week: number[]
+          id: string
+          is_active: boolean
+          reminder_type: string
+          time_of_day: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          days_of_week?: number[]
+          id?: string
+          is_active?: boolean
+          reminder_type?: string
+          time_of_day?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          days_of_week?: number[]
+          id?: string
+          is_active?: boolean
+          reminder_type?: string
+          time_of_day?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_affirmations: {
         Row: {
           affirmation: string
