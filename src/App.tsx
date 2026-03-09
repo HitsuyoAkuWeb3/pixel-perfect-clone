@@ -16,6 +16,7 @@ import Onboarding from "./pages/Onboarding";
 import MyBricks from "./pages/MyBricks";
 import BrickDetail from "./pages/BrickDetail";
 import DailyRitual from "./pages/DailyRitual";
+import Affirmations from "./pages/Affirmations";
 import NotFound from "./pages/NotFound";
 import FloatingNav from "./components/FloatingNav";
 
