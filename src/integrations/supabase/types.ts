@@ -43,6 +43,30 @@ export type Database = {
           },
         ]
       }
+      brick_affirmations: {
+        Row: {
+          affirmation: string
+          brick_id: number
+          category: string | null
+          created_at: string
+          id: string
+        }
+        Insert: {
+          affirmation: string
+          brick_id: number
+          category?: string | null
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          affirmation?: string
+          brick_id?: number
+          category?: string | null
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
       daily_rituals: {
         Row: {
           created_at: string
@@ -169,6 +193,33 @@ export type Database = {
           name?: string | null
           transformation_choice?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      user_affirmations: {
+        Row: {
+          affirmation: string
+          brick_id: number | null
+          created_at: string
+          id: string
+          is_favorite: boolean | null
+          user_id: string
+        }
+        Insert: {
+          affirmation: string
+          brick_id?: number | null
+          created_at?: string
+          id?: string
+          is_favorite?: boolean | null
+          user_id: string
+        }
+        Update: {
+          affirmation?: string
+          brick_id?: number | null
+          created_at?: string
+          id?: string
+          is_favorite?: boolean | null
+          user_id?: string
         }
         Relationships: []
       }
