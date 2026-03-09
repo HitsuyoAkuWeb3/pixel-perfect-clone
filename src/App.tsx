@@ -13,6 +13,8 @@ import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import Onboarding from "./pages/Onboarding";
+import MyBricks from "./pages/MyBricks";
+import BrickDetail from "./pages/BrickDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +46,22 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Onboarding />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/bricks"
+              element={
+                <ProtectedRoute>
+                  <MyBricks />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/bricks/:slug"
+              element={
+                <ProtectedRoute>
+                  <BrickDetail />
                 </ProtectedRoute>
               }
             />
