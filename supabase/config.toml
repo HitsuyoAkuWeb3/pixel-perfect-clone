@@ -1,1 +1,4 @@
 project_id = "ikpyappysjhehjfpckom"
+
+[functions.generate-affirmations]
+verify_jwt = false
