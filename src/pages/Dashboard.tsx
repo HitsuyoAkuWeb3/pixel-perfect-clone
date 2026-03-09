@@ -132,6 +132,7 @@ const Dashboard = () => {
               Coming Soon
             </div>
           </div>
+          )
         ))}
       </div>
 
