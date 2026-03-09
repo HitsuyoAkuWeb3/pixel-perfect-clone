@@ -70,6 +70,45 @@ export type Database = {
         }
         Relationships: []
       }
+      profiles: {
+        Row: {
+          audit_scores: Json | null
+          avatar_url: string | null
+          birth_date: string | null
+          created_at: string
+          email: string | null
+          goals: string[] | null
+          id: string
+          name: string | null
+          transformation_choice: string | null
+          updated_at: string
+        }
+        Insert: {
+          audit_scores?: Json | null
+          avatar_url?: string | null
+          birth_date?: string | null
+          created_at?: string
+          email?: string | null
+          goals?: string[] | null
+          id: string
+          name?: string | null
+          transformation_choice?: string | null
+          updated_at?: string
+        }
+        Update: {
+          audit_scores?: Json | null
+          avatar_url?: string | null
+          birth_date?: string | null
+          created_at?: string
+          email?: string | null
+          goals?: string[] | null
+          id?: string
+          name?: string | null
+          transformation_choice?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
