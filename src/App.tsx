@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import LifeAudit from "./pages/LifeAudit";
 import BreakthroughConfirmation from "./pages/BreakthroughConfirmation";
+import Coaching from "./pages/Coaching";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
