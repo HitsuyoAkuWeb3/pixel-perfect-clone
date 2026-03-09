@@ -34,7 +34,7 @@ const Affirmations = () => {
     return acc;
   }, {} as Record<number, typeof brickAffirmations>);
 
-  const favorites = userAffirmations.filter((a) => a.is_favorite);
+  const favoriteAffirmations = userAffirmations.filter((a) => a.is_favorite);
 
   return (
     <div className="min-h-screen bg-background px-5 py-10 pb-24">

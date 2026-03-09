@@ -68,8 +68,8 @@ const Dashboard = () => {
         Welcome, <span className="text-accent">Queen</span>
       </h1>
 
-      <p className="font-body text-sm text-muted-foreground mb-2">
-        {user?.email}
+      <p className="font-body text-muted-foreground max-w-md mb-4">
+        Your Brickhouse is under construction. {completedLessons.length > 0 && `${completedLessons.length} lessons completed.`}
       </p>
 
       <p className="font-body text-muted-foreground max-w-md mb-4">
