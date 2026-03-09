@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
+import { analytics } from "@/lib/analytics";
 import {
   Dialog,
   DialogContent,
