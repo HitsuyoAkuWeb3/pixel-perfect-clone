@@ -39,7 +39,7 @@ const SocialProofSection = () => {
         </div>
 
         {/* CTA */}
-        <button className="py-4 px-10 rounded-xl bg-gradient-pink font-body font-semibold tracking-wide transition-all duration-300 hover:scale-[1.02] animate-pulse-glow text-foreground">
+        <button className="py-4 px-10 rounded-xl bg-gradient-pink font-body font-semibold tracking-wide transition-all duration-300 hover:scale-[1.02] text-foreground">
           Take the Free Life Audit →
         </button>
       </div>
