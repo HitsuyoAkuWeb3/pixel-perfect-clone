@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
@@ -67,6 +67,45 @@ const Onboarding = () => {
   const [transformation, setTransformation] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  // Import audit scores if user completed audit before signup
+  useEffect(() => {
+    if (!user?.email) return;
+    const importAuditScores = async () => {
+      // Find lead by email
+      const { data: lead } = await supabase
+        .from("leads")
+        .select("id")
+        .eq("email", user.email!)
+        .maybeSingle();
+      if (!lead) return;
+
+      // Find audit results for that lead
+      const { data: auditResult } = await supabase
+        .from("audit_results")
+        .select("scores")
+        .eq("lead_id", lead.id)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (!auditResult) return;
+
+      // Check if profile already has scores
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("audit_scores")
+        .eq("id", user.id)
+        .single();
+      if (profile?.audit_scores) return;
+
+      // Import scores into profile
+      await supabase
+        .from("profiles")
+        .update({ audit_scores: auditResult.scores, updated_at: new Date().toISOString() })
+        .eq("id", user.id);
+    };
+    importAuditScores();
+  }, [user]);
+
   const updateGoal = (index: number, value: string) => {
     setGoals((prev) => {
       const next = [...prev];
@@ -89,9 +128,7 @@ const Onboarding = () => {
       const { error } = await supabase
         .from("profiles")
         .update({
-          birth_date: birthDate
-            ? format(birthDate, "yyyy-MM-dd")
-            : null,
+          birth_date: birthDate ? format(birthDate, "yyyy-MM-dd") : null,
           goals: filteredGoals,
           transformation_choice: transformation,
           updated_at: new Date().toISOString(),
@@ -111,7 +148,6 @@ const Onboarding = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center px-6 py-12 overflow-x-hidden">
-      {/* Pink glow */}
       <div
         className="fixed top-0 left-1/2 -translate-x-1/2 w-[80%] h-[40%] pointer-events-none"
         style={{
@@ -127,7 +163,6 @@ const Onboarding = () => {
           className="w-40 mx-auto mb-6 drop-shadow-[0_0_30px_hsl(330_100%_42%/0.4)]"
         />
 
-        {/* Progress dots */}
         <div className="flex items-center justify-center gap-2 mb-10">
           {(["birthdate", "goals", "transformation"] as Step[]).map((s, i) => (
             <div
@@ -136,8 +171,7 @@ const Onboarding = () => {
                 "w-2.5 h-2.5 rounded-full transition-all",
                 step === s
                   ? "bg-primary w-6"
-                  : i <
-                    ["birthdate", "goals", "transformation"].indexOf(step)
+                  : i < ["birthdate", "goals", "transformation"].indexOf(step)
                   ? "bg-accent"
                   : "bg-foreground/15"
               )}
@@ -146,38 +180,20 @@ const Onboarding = () => {
         </div>
 
         <AnimatePresence mode="wait">
-          {/* Step 1: Birth Date */}
           {step === "birthdate" && (
-            <motion.div
-              key="birthdate"
-              variants={stepVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              className="text-center"
-            >
+            <motion.div key="birthdate" variants={stepVariants} initial="initial" animate="animate" exit="exit" className="text-center">
               <h1 className="font-display text-3xl sm:text-4xl tracking-wider mb-2">
                 When were you <span className="text-accent">born</span>?
               </h1>
               <p className="font-body text-sm text-muted-foreground mb-8 max-w-sm mx-auto">
-                Your birth date powers your future Goddess Prescription —
-                personalized crystals, colors, and spiritual tools aligned to
-                your sign.
+                Your birth date powers your future Goddess Prescription — personalized crystals, colors, and spiritual tools aligned to your sign.
               </p>
-
               <div className="flex justify-center mb-8">
                 <Popover>
                   <PopoverTrigger asChild>
-                    <button
-                      className={cn(
-                        "flex items-center gap-3 bg-input border border-border rounded-lg px-5 py-3.5 font-body text-sm transition-colors hover:border-primary/40",
-                        !birthDate && "text-muted-foreground"
-                      )}
-                    >
+                    <button className={cn("flex items-center gap-3 bg-input border border-border rounded-lg px-5 py-3.5 font-body text-sm transition-colors hover:border-primary/40", !birthDate && "text-muted-foreground")}>
                       <CalendarIcon className="w-4 h-4" />
-                      {birthDate
-                        ? format(birthDate, "MMMM d, yyyy")
-                        : "Select your birthday"}
+                      {birthDate ? format(birthDate, "MMMM d, yyyy") : "Select your birthday"}
                     </button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="center">
@@ -185,9 +201,7 @@ const Onboarding = () => {
                       mode="single"
                       selected={birthDate}
                       onSelect={setBirthDate}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1920-01-01")
-                      }
+                      disabled={(date) => date > new Date() || date < new Date("1920-01-01")}
                       initialFocus
                       className={cn("p-3 pointer-events-auto")}
                       captionLayout="dropdown-buttons"
@@ -197,57 +211,28 @@ const Onboarding = () => {
                   </PopoverContent>
                 </Popover>
               </div>
-
               <div className="flex gap-3 justify-center">
-                <button
-                  onClick={() => setStep("goals")}
-                  className="font-body text-xs text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Skip for now
-                </button>
-                <button
-                  onClick={() => setStep("goals")}
-                  disabled={!birthDate}
-                  className="bg-gradient-pink text-foreground font-body font-bold text-sm tracking-wider uppercase px-8 py-3 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-40"
-                >
-                  Next →
-                </button>
+                <button onClick={() => setStep("goals")} className="font-body text-xs text-muted-foreground hover:text-foreground transition-colors">Skip for now</button>
+                <button onClick={() => setStep("goals")} disabled={!birthDate} className="bg-gradient-pink text-foreground font-body font-bold text-sm tracking-wider uppercase px-8 py-3 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-40">Next →</button>
               </div>
             </motion.div>
           )}
 
-          {/* Step 2: Goals */}
           {step === "goals" && (
-            <motion.div
-              key="goals"
-              variants={stepVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
+            <motion.div key="goals" variants={stepVariants} initial="initial" animate="animate" exit="exit">
               <h1 className="font-display text-3xl sm:text-4xl tracking-wider mb-2 text-center">
                 Your <span className="text-accent">3 biggest goals</span>
               </h1>
               <p className="font-body text-sm text-muted-foreground mb-8 text-center max-w-sm mx-auto">
-                What are you building toward right now? Be specific. Be honest.
-                These shape your entire Brickhouse experience.
+                What are you building toward right now? Be specific. Be honest. These shape your entire Brickhouse experience.
               </p>
-
               <div className="space-y-3 mb-8">
                 {goals.map((goal, i) => (
                   <div key={i} className="flex items-center gap-3">
-                    <span className="font-display text-lg text-accent w-6 text-right shrink-0">
-                      {i + 1}
-                    </span>
+                    <span className="font-display text-lg text-accent w-6 text-right shrink-0">{i + 1}</span>
                     <input
                       type="text"
-                      placeholder={
-                        i === 0
-                          ? "e.g. Start my own business"
-                          : i === 1
-                          ? "e.g. Build a morning routine"
-                          : "e.g. Find a partner who adores me"
-                      }
+                      placeholder={i === 0 ? "e.g. Start my own business" : i === 1 ? "e.g. Build a morning routine" : "e.g. Find a partner who adores me"}
                       value={goal}
                       onChange={(e) => updateGoal(i, e.target.value)}
                       maxLength={200}
@@ -256,43 +241,21 @@ const Onboarding = () => {
                   </div>
                 ))}
               </div>
-
               <div className="flex gap-3 justify-center">
-                <button
-                  onClick={() => setStep("birthdate")}
-                  className="font-body text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  ← Back
-                </button>
-                <button
-                  onClick={() => setStep("transformation")}
-                  disabled={!canProceedGoals}
-                  className="bg-gradient-pink text-foreground font-body font-bold text-sm tracking-wider uppercase px-8 py-3 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-40"
-                >
-                  Next →
-                </button>
+                <button onClick={() => setStep("birthdate")} className="font-body text-sm text-muted-foreground hover:text-foreground transition-colors">← Back</button>
+                <button onClick={() => setStep("transformation")} disabled={!canProceedGoals} className="bg-gradient-pink text-foreground font-body font-bold text-sm tracking-wider uppercase px-8 py-3 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-40">Next →</button>
               </div>
             </motion.div>
           )}
 
-          {/* Step 3: Transformation */}
           {step === "transformation" && (
-            <motion.div
-              key="transformation"
-              variants={stepVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
+            <motion.div key="transformation" variants={stepVariants} initial="initial" animate="animate" exit="exit">
               <h1 className="font-display text-3xl sm:text-4xl tracking-wider mb-2 text-center">
-                Which transformation{" "}
-                <span className="text-gradient-pink">speaks to you</span>?
+                Which transformation <span className="text-gradient-pink">speaks to you</span>?
               </h1>
               <p className="font-body text-sm text-muted-foreground mb-8 text-center max-w-sm mx-auto">
-                Choose the one that feels most true right now. This shapes your
-                starting path.
+                Choose the one that feels most true right now. This shapes your starting path.
               </p>
-
               <div className="space-y-3 mb-8">
                 {transformations.map((t) => (
                   <button
@@ -308,25 +271,15 @@ const Onboarding = () => {
                     <div className="flex items-start gap-3">
                       <span className="text-2xl shrink-0">{t.emoji}</span>
                       <div>
-                        <div className="font-display text-lg tracking-wider mb-1">
-                          {t.title}
-                        </div>
-                        <p className="font-body text-xs text-muted-foreground leading-relaxed">
-                          {t.description}
-                        </p>
+                        <div className="font-display text-lg tracking-wider mb-1">{t.title}</div>
+                        <p className="font-body text-xs text-muted-foreground leading-relaxed">{t.description}</p>
                       </div>
                     </div>
                   </button>
                 ))}
               </div>
-
               <div className="flex gap-3 justify-center">
-                <button
-                  onClick={() => setStep("goals")}
-                  className="font-body text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  ← Back
-                </button>
+                <button onClick={() => setStep("goals")} className="font-body text-sm text-muted-foreground hover:text-foreground transition-colors">← Back</button>
                 <button
                   onClick={handleFinish}
                   disabled={!transformation || submitting}

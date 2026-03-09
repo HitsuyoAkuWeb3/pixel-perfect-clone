@@ -1,12 +1,14 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Lock } from "lucide-react";
+import { ArrowLeft, Lock, Check } from "lucide-react";
 import { getBrickBySlug } from "@/data/bricksContent";
+import { useLessonProgress } from "@/hooks/useLessonProgress";
 import { cn } from "@/lib/utils";
 
 const BrickDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const brick = slug ? getBrickBySlug(slug) : undefined;
+  const { isLessonCompleted, toggleLesson, getBrickProgress } = useLessonProgress();
 
   if (!brick) {
     return (
@@ -21,13 +23,12 @@ const BrickDetail = () => {
     );
   }
 
-  // Brick 1 is unlocked for all; rest show as locked placeholder
   const isUnlocked = brick.id === 1;
+  const progress = getBrickProgress(brick.id, brick.lessonCount);
 
   return (
     <div className="min-h-screen bg-background px-6 py-10">
       <div className="max-w-2xl mx-auto">
-        {/* Header */}
         <Link
           to="/bricks"
           className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
@@ -60,24 +61,25 @@ const BrickDetail = () => {
             {brick.description}
           </p>
 
-          {/* Progress */}
           <div className="flex items-center gap-3 mb-8">
             <div className="flex-1 h-2 bg-foreground/[0.07] rounded-full overflow-hidden">
-              <div
+              <motion.div
                 className="h-full rounded-full bg-gradient-to-r from-primary to-accent"
-                style={{ width: "0%" }}
+                initial={{ width: 0 }}
+                animate={{ width: `${progress.percent}%` }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
               />
             </div>
             <span className="font-body text-xs text-muted-foreground">
-              0 / {brick.lessonCount}
+              {progress.completed} / {brick.lessonCount}
             </span>
           </div>
         </motion.div>
 
-        {/* Lessons */}
         <div className="space-y-2">
           {brick.lessons.map((lesson, i) => {
             const locked = !isUnlocked;
+            const completed = isLessonCompleted(lesson.id);
 
             return (
               <motion.div
@@ -95,30 +97,41 @@ const BrickDetail = () => {
                     "flex items-start gap-4 rounded-xl border p-4 transition-all",
                     locked
                       ? "bg-foreground/[0.02] border-border opacity-50"
-                      : "bg-gradient-card border-border hover:border-primary/30 cursor-pointer"
+                      : completed
+                      ? "bg-primary/[0.06] border-primary/20"
+                      : "bg-gradient-card border-border hover:border-primary/30"
                   )}
                 >
-                  {/* Lesson number */}
-                  <div
-                    className={cn(
-                      "w-8 h-8 rounded-lg flex items-center justify-center shrink-0 font-display text-sm",
-                      locked
-                        ? "bg-foreground/[0.05] text-muted-foreground"
-                        : "bg-primary/10 text-primary"
-                    )}
-                  >
-                    {locked ? (
+                  {locked ? (
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-foreground/[0.05] text-muted-foreground">
                       <Lock className="w-3.5 h-3.5" />
-                    ) : (
-                      String(i + 1).padStart(2, "0")
-                    )}
-                  </div>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() =>
+                        toggleLesson.mutate({
+                          lessonId: lesson.id,
+                          brickId: brick.id,
+                          completed: !completed,
+                        })
+                      }
+                      className={cn(
+                        "w-8 h-8 rounded-lg flex items-center justify-center shrink-0 font-display text-sm transition-all",
+                        completed
+                          ? "bg-primary/20 text-primary"
+                          : "bg-foreground/[0.05] text-muted-foreground hover:bg-primary/10 hover:text-primary cursor-pointer"
+                      )}
+                    >
+                      {completed ? <Check className="w-4 h-4" /> : String(i + 1).padStart(2, "0")}
+                    </button>
+                  )}
 
                   <div className="flex-1 min-w-0">
                     <h3
                       className={cn(
                         "font-display text-sm tracking-wider leading-snug",
-                        locked && "text-muted-foreground"
+                        locked && "text-muted-foreground",
+                        completed && "text-primary"
                       )}
                     >
                       {lesson.title}
@@ -133,7 +146,6 @@ const BrickDetail = () => {
           })}
         </div>
 
-        {/* Locked message */}
         {!isUnlocked && (
           <motion.div
             className="mt-6 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/5 border border-primary/25 p-6 text-center"
@@ -142,12 +154,9 @@ const BrickDetail = () => {
             transition={{ delay: 0.5 }}
           >
             <Lock className="w-6 h-6 text-primary mx-auto mb-3" />
-            <h3 className="font-display text-lg tracking-wider mb-2">
-              Unlock This Brick
-            </h3>
+            <h3 className="font-display text-lg tracking-wider mb-2">Unlock This Brick</h3>
             <p className="font-body text-xs text-muted-foreground leading-relaxed max-w-sm mx-auto mb-4">
-              Join the Brickhouse Collective to access all 12 Bricks, daily
-              rituals, and your complete Lifestyle Architecture tools.
+              Join the Brickhouse Collective to access all 12 Bricks, daily rituals, and your complete Lifestyle Architecture tools.
             </p>
             <a
               href="https://example.com/brickhouse-collective"

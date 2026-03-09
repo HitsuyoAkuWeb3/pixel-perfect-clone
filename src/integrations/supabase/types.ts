@@ -43,6 +43,45 @@ export type Database = {
           },
         ]
       }
+      daily_rituals: {
+        Row: {
+          created_at: string
+          evening_reflection: boolean
+          gratitude_note: string | null
+          id: string
+          joy_moment: string | null
+          midday_checkin: boolean
+          morning_affirmation: boolean
+          ritual_date: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          evening_reflection?: boolean
+          gratitude_note?: string | null
+          id?: string
+          joy_moment?: string | null
+          midday_checkin?: boolean
+          morning_affirmation?: boolean
+          ritual_date?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          evening_reflection?: boolean
+          gratitude_note?: string | null
+          id?: string
+          joy_moment?: string | null
+          midday_checkin?: boolean
+          morning_affirmation?: boolean
+          ritual_date?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           created_at: string
@@ -67,6 +106,30 @@ export type Database = {
           name?: string
           phone?: string | null
           variant?: string
+        }
+        Relationships: []
+      }
+      lesson_progress: {
+        Row: {
+          brick_id: number
+          completed_at: string
+          id: string
+          lesson_id: string
+          user_id: string
+        }
+        Insert: {
+          brick_id: number
+          completed_at?: string
+          id?: string
+          lesson_id: string
+          user_id: string
+        }
+        Update: {
+          brick_id?: number
+          completed_at?: string
+          id?: string
+          lesson_id?: string
+          user_id?: string
         }
         Relationships: []
       }

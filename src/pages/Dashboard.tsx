@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useLessonProgress } from "@/hooks/useLessonProgress";
+import { useDailyRitual } from "@/hooks/useDailyRitual";
 import logo from "@/assets/brickhouse-logo.png";
 
 const Dashboard = () => {
   const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
   const [checkingProfile, setCheckingProfile] = useState(true);
+  const { completedLessons } = useLessonProgress();
+  const { ritual, streak } = useDailyRitual();
 
   useEffect(() => {
     if (loading || !user) return;
@@ -19,7 +23,6 @@ const Dashboard = () => {
         .eq("id", user.id)
         .single();
 
-      // If no transformation chosen, redirect to onboarding
       if (!data?.transformation_choice) {
         navigate("/onboarding", { replace: true });
         return;
@@ -37,6 +40,12 @@ const Dashboard = () => {
 
   if (loading || checkingProfile) return null;
 
+  const todayComplete = [
+    ritual?.morning_affirmation,
+    ritual?.midday_checkin,
+    ritual?.evening_reflection,
+  ].filter(Boolean).length;
+
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6 py-12 text-center">
       <img
@@ -53,10 +62,25 @@ const Dashboard = () => {
         {user?.email}
       </p>
 
-      <p className="font-body text-muted-foreground max-w-md mb-10">
-        Your Brickhouse is under construction. The 12 Bricks, daily rituals,
-        and your full Lifestyle Architecture tools are coming soon.
+      <p className="font-body text-muted-foreground max-w-md mb-4">
+        Your Brickhouse is under construction. {completedLessons.length > 0 && `${completedLessons.length} lessons completed.`}
       </p>
+
+      {/* Quick stats */}
+      <div className="flex gap-4 mb-8">
+        <div className="bg-gradient-card border border-border rounded-xl px-4 py-3 text-center">
+          <div className="font-display text-2xl text-accent">{streak}</div>
+          <div className="font-body text-[9px] text-muted-foreground uppercase tracking-wider">Day Streak</div>
+        </div>
+        <div className="bg-gradient-card border border-border rounded-xl px-4 py-3 text-center">
+          <div className="font-display text-2xl text-primary">{completedLessons.length}</div>
+          <div className="font-body text-[9px] text-muted-foreground uppercase tracking-wider">Lessons Done</div>
+        </div>
+        <div className="bg-gradient-card border border-border rounded-xl px-4 py-3 text-center">
+          <div className="font-display text-2xl">{todayComplete}/3</div>
+          <div className="font-body text-[9px] text-muted-foreground uppercase tracking-wider">Today's Ritual</div>
+        </div>
+      </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-lg w-full mb-10">
         <Link
@@ -69,8 +93,17 @@ const Dashboard = () => {
             Explore →
           </div>
         </Link>
+        <Link
+          to="/daily-ritual"
+          className="bg-gradient-card border border-border rounded-xl p-4 text-center hover:border-primary/40 transition-all hover:shadow-[0_0_20px_hsl(var(--primary)/0.15)]"
+        >
+          <div className="text-2xl mb-2">🌅</div>
+          <div className="font-display text-xs tracking-wider">Daily Ritual</div>
+          <div className="text-[9px] text-accent mt-1 uppercase tracking-wider">
+            {todayComplete === 3 ? "Done ✓" : "Start →"}
+          </div>
+        </Link>
         {[
-          { icon: "🌅", label: "Daily Ritual" },
           { icon: "💎", label: "Affirmations" },
           { icon: "🔥", label: "Passion Pick" },
           { icon: "📐", label: "Scheduler" },
