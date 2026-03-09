@@ -17,6 +17,7 @@ import MyBricks from "./pages/MyBricks";
 import BrickDetail from "./pages/BrickDetail";
 import DailyRitual from "./pages/DailyRitual";
 import Affirmations from "./pages/Affirmations";
+import PassionPick from "./pages/PassionPick";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Contact from "./pages/Contact";
