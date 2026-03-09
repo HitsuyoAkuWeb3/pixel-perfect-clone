@@ -1,6 +1,9 @@
-import logo from "@/assets/brickhouse-logo.png";
+import { useState } from "react";
+import LeadCaptureModal from "@/components/LeadCaptureModal";
 
 const SocialProofSection = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <section className="relative px-6 py-20 md:py-28">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
@@ -39,10 +42,19 @@ const SocialProofSection = () => {
         </div>
 
         {/* CTA */}
-        <button className="py-4 px-10 rounded-xl bg-gradient-pink font-body font-semibold tracking-wide transition-all duration-300 hover:scale-[1.02] text-foreground">
+        <button
+          onClick={() => setModalOpen(true)}
+          className="py-4 px-10 rounded-xl bg-gradient-pink font-body font-semibold tracking-wide transition-all duration-300 hover:scale-[1.02] text-foreground"
+        >
           Take the Free Life Audit →
         </button>
       </div>
+
+      <LeadCaptureModal
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        variant="audit"
+      />
     </section>
   );
 };

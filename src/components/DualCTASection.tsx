@@ -1,6 +1,18 @@
+import { useState } from "react";
 import { ClipboardCheck, Flame } from "lucide-react";
+import LeadCaptureModal from "@/components/LeadCaptureModal";
 
 const DualCTASection = () => {
+  const [modalVariant, setModalVariant] = useState<"audit" | "breakthrough">(
+    "audit"
+  );
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = (variant: "audit" | "breakthrough") => {
+    setModalVariant(variant);
+    setModalOpen(true);
+  };
+
   return (
     <section className="relative px-6 py-20 md:py-28">
       <div className="max-w-5xl mx-auto">
@@ -14,7 +26,6 @@ const DualCTASection = () => {
         <div className="grid md:grid-cols-2 gap-8">
           {/* Life Audit Card */}
           <div className="group relative rounded-2xl bg-gradient-card border border-border p-8 md:p-10 transition-all duration-500 hover:border-primary/40 hover:shadow-pink-glow">
-            {/* Badge */}
             <span className="inline-block font-display text-sm tracking-[4px] text-gold-light mb-6">
               OPTION 1
             </span>
@@ -39,14 +50,16 @@ const DualCTASection = () => {
               </span>
             </div>
 
-            <button className="w-full py-4 px-6 rounded-xl bg-gradient-pink font-body font-semibold tracking-wide transition-all duration-300 hover:scale-[1.02] text-foreground">
+            <button
+              onClick={() => openModal("audit")}
+              className="w-full py-4 px-6 rounded-xl bg-gradient-pink font-body font-semibold tracking-wide transition-all duration-300 hover:scale-[1.02] text-foreground"
+            >
               Start My Audit →
             </button>
           </div>
 
           {/* Breakthrough Card */}
           <div className="group relative rounded-2xl bg-gradient-card border border-border p-8 md:p-10 transition-all duration-500 hover:border-accent/40 hover:shadow-gold-glow">
-            {/* Badge */}
             <span className="inline-block font-display text-sm tracking-[4px] text-gold-light mb-6">
               OPTION 2
             </span>
@@ -71,12 +84,21 @@ const DualCTASection = () => {
               </span>
             </div>
 
-            <button className="w-full py-4 px-6 rounded-xl border-2 border-accent font-body font-semibold tracking-wide text-accent transition-all duration-300 hover:bg-accent hover:text-accent-foreground hover:scale-[1.02]">
+            <button
+              onClick={() => openModal("breakthrough")}
+              className="w-full py-4 px-6 rounded-xl border-2 border-accent font-body font-semibold tracking-wide text-accent transition-all duration-300 hover:bg-accent hover:text-accent-foreground hover:scale-[1.02]"
+            >
               Register Now →
             </button>
           </div>
         </div>
       </div>
+
+      <LeadCaptureModal
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        variant={modalVariant}
+      />
     </section>
   );
 };
