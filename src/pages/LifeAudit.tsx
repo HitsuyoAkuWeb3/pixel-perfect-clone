@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { areas } from "@/data/auditContent";
+import { analytics } from "@/lib/analytics";
 import AuditCover from "@/components/audit/AuditCover";
 import AuditIntro from "@/components/audit/AuditIntro";
 import AuditProgress from "@/components/audit/AuditProgress";
