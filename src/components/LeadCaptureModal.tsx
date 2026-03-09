@@ -99,7 +99,6 @@ const LeadCaptureModal = ({
 
     setSubmitted(true);
 
-    // For audit variant, navigate to the Life Audit page after a brief delay
     if (variant === "audit") {
       // Get the inserted lead's id for linking audit results
       const { data: leadData } = await supabase
@@ -118,6 +117,11 @@ const LeadCaptureModal = ({
             ? `/life-audit?lead=${leadData.id}`
             : "/life-audit"
         );
+      }, 1500);
+    } else if (variant === "breakthrough") {
+      setTimeout(() => {
+        onOpenChange(false);
+        navigate("/breakthrough-confirmation");
       }, 1500);
     }
   };
