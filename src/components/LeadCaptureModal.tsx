@@ -60,6 +60,7 @@ const LeadCaptureModal = ({
     {}
   );
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const { title, description, cta } = copy[variant];
 
