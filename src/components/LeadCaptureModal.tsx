@@ -187,9 +187,10 @@ const LeadCaptureModal = ({
 
               <Button
                 type="submit"
-                className="w-full py-6 rounded-xl bg-gradient-pink font-body font-semibold tracking-wide text-foreground hover:scale-[1.02] transition-transform"
+                disabled={submitting}
+                className="w-full py-6 rounded-xl bg-gradient-pink font-body font-semibold tracking-wide text-foreground hover:scale-[1.02] transition-transform disabled:opacity-60"
               >
-                {cta}
+                {submitting ? "Submitting…" : cta}
               </Button>
             </form>
           </>
