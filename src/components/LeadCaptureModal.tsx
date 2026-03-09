@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 const leadSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -59,10 +60,11 @@ const LeadCaptureModal = ({
     {}
   );
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const { title, description, cta } = copy[variant];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const result = leadSchema.safeParse(formData);
 
@@ -77,7 +79,22 @@ const LeadCaptureModal = ({
     }
 
     setErrors({});
-    // TODO: send to backend
+    setSubmitting(true);
+
+    const { error } = await supabase.from("leads").insert({
+      name: result.data.name,
+      email: result.data.email,
+      phone: result.data.phone || null,
+      variant,
+    });
+
+    setSubmitting(false);
+
+    if (error) {
+      setErrors({ email: "Something went wrong. Please try again." });
+      return;
+    }
+
     setSubmitted(true);
   };
 
@@ -170,9 +187,10 @@ const LeadCaptureModal = ({
 
               <Button
                 type="submit"
-                className="w-full py-6 rounded-xl bg-gradient-pink font-body font-semibold tracking-wide text-foreground hover:scale-[1.02] transition-transform"
+                disabled={submitting}
+                className="w-full py-6 rounded-xl bg-gradient-pink font-body font-semibold tracking-wide text-foreground hover:scale-[1.02] transition-transform disabled:opacity-60"
               >
-                {cta}
+                {submitting ? "Submitting…" : cta}
               </Button>
             </form>
           </>
