@@ -49,6 +49,22 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/bricks"
+              element={
+                <ProtectedRoute>
+                  <MyBricks />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/bricks/:slug"
+              element={
+                <ProtectedRoute>
+                  <BrickDetail />
+                </ProtectedRoute>
+              }
+            />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
