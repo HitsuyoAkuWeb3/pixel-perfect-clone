@@ -3,15 +3,6 @@ import { CheckCircle, Instagram, Calendar, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/brickhouse-logo.png";
 
-const fadeUp = {
-  initial: { opacity: 0, y: 24 },
-  animate: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.15, duration: 0.6, ease: [0.16, 1, 0.3, 1] },
-  }),
-};
-
 const steps = [
   {
     emoji: "📩",
@@ -37,10 +28,9 @@ const BreakthroughConfirmation = () => {
         {/* Logo */}
         <motion.div
           className="text-center mb-10"
-          variants={fadeUp}
-          initial="initial"
-          animate="animate"
-          custom={0}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <img
             src={logo}
@@ -52,10 +42,9 @@ const BreakthroughConfirmation = () => {
         {/* Confirmation badge */}
         <motion.div
           className="text-center mb-8"
-          variants={fadeUp}
-          initial="initial"
-          animate="animate"
-          custom={1}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.6, ease: "easeOut" }}
         >
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-accent/10 border border-accent/30 mb-5">
             <CheckCircle className="w-10 h-10 text-accent" />
@@ -71,16 +60,15 @@ const BreakthroughConfirmation = () => {
         {/* Next steps */}
         <motion.div
           className="mb-10"
-          variants={fadeUp}
-          initial="initial"
-          animate="animate"
-          custom={2}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
         >
           <p className="font-display text-sm tracking-[4px] text-gold-light text-center mb-6">
             YOUR NEXT STEPS
           </p>
           <div className="space-y-4">
-            {steps.map((step, i) => (
+            {steps.map((step) => (
               <div
                 key={step.title}
                 className="flex items-start gap-4 rounded-2xl bg-card border border-border p-5 transition-colors hover:border-primary/30"
@@ -100,10 +88,9 @@ const BreakthroughConfirmation = () => {
         {/* What to expect */}
         <motion.div
           className="rounded-2xl bg-gradient-to-br from-primary/10 to-secondary/5 border border-primary/25 p-7 mb-10 text-center"
-          variants={fadeUp}
-          initial="initial"
-          animate="animate"
-          custom={3}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45, duration: 0.6, ease: "easeOut" }}
         >
           <Calendar className="w-8 h-8 text-primary mx-auto mb-3" />
           <h3 className="font-display text-xl mb-2">What to Expect</h3>
@@ -115,10 +102,9 @@ const BreakthroughConfirmation = () => {
         {/* Social + back */}
         <motion.div
           className="text-center"
-          variants={fadeUp}
-          initial="initial"
-          animate="animate"
-          custom={4}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
         >
           <p className="font-body text-sm text-muted-foreground mb-4">
             Follow along for daily inspiration:
