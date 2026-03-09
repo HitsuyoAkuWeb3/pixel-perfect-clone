@@ -5,7 +5,6 @@ import { bricks } from "@/data/bricksContent";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Plus, Trash2, Sparkles, ChevronDown, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
-import logo from "@/assets/brickhouse-logo.png";
 
 const Affirmations = () => {
   const [selectedBrick, setSelectedBrick] = useState<number | undefined>(undefined);
@@ -35,7 +34,15 @@ const Affirmations = () => {
     return acc;
   }, {} as Record<number, typeof brickAffirmations>);
 
-  const favorites = userAffirmations.filter((a) => a.is_favorite);
+  const favoriteAffirmations = userAffirmations.filter((a) => a.is_favorite);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="font-display text-sm text-muted-foreground tracking-wider animate-pulse">Loading affirmations...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background px-5 py-10 pb-24">

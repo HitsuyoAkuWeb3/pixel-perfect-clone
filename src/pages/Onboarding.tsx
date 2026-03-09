@@ -71,37 +71,37 @@ const Onboarding = () => {
   useEffect(() => {
     if (!user?.email) return;
     const importAuditScores = async () => {
-      // Find lead by email
-      const { data: lead } = await supabase
-        .from("leads")
-        .select("id")
-        .eq("email", user.email!)
-        .maybeSingle();
-      if (!lead) return;
+      try {
+        const { data: lead } = await supabase
+          .from("leads")
+          .select("id")
+          .eq("email", user.email!)
+          .maybeSingle();
+        if (!lead) return;
 
-      // Find audit results for that lead
-      const { data: auditResult } = await supabase
-        .from("audit_results")
-        .select("scores")
-        .eq("lead_id", lead.id)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      if (!auditResult) return;
+        const { data: auditResult } = await supabase
+          .from("audit_results")
+          .select("scores")
+          .eq("lead_id", lead.id)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        if (!auditResult) return;
 
-      // Check if profile already has scores
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("audit_scores")
-        .eq("id", user.id)
-        .single();
-      if (profile?.audit_scores) return;
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("audit_scores")
+          .eq("id", user.id)
+          .single();
+        if (profile?.audit_scores) return;
 
-      // Import scores into profile
-      await supabase
-        .from("profiles")
-        .update({ audit_scores: auditResult.scores, updated_at: new Date().toISOString() })
-        .eq("id", user.id);
+        await supabase
+          .from("profiles")
+          .update({ audit_scores: auditResult.scores, updated_at: new Date().toISOString() })
+          .eq("id", user.id);
+      } catch (err) {
+        console.error("Audit import failed:", err);
+      }
     };
     importAuditScores();
   }, [user]);

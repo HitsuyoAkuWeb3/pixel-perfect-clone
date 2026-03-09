@@ -17,17 +17,27 @@ const Dashboard = () => {
     if (loading || !user) return;
 
     const checkOnboarding = async () => {
-      const { data } = await supabase
-        .from("profiles")
-        .select("transformation_choice")
-        .eq("id", user.id)
-        .single();
+      try {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("transformation_choice")
+          .eq("id", user.id)
+          .single();
 
-      if (!data?.transformation_choice) {
-        navigate("/onboarding", { replace: true });
-        return;
+        if (error) {
+          console.error("Profile check failed:", error.message);
+          setCheckingProfile(false);
+          return;
+        }
+
+        if (!data?.transformation_choice) {
+          navigate("/onboarding", { replace: true });
+          return;
+        }
+        setCheckingProfile(false);
+      } catch {
+        setCheckingProfile(false);
       }
-      setCheckingProfile(false);
     };
 
     checkOnboarding();
@@ -58,8 +68,8 @@ const Dashboard = () => {
         Welcome, <span className="text-accent">Queen</span>
       </h1>
 
-      <p className="font-body text-sm text-muted-foreground mb-2">
-        {user?.email}
+      <p className="font-body text-muted-foreground max-w-md mb-4">
+        Your Brickhouse is under construction. {completedLessons.length > 0 && `${completedLessons.length} lessons completed.`}
       </p>
 
       <p className="font-body text-muted-foreground max-w-md mb-4">
