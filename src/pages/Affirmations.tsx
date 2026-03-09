@@ -1,16 +1,21 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import { useAffirmations } from "@/hooks/useAffirmations";
 import { bricks } from "@/data/bricksContent";
+import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Plus, Trash2, Sparkles, ChevronDown, ArrowLeft } from "lucide-react";
+import { Heart, Plus, Trash2, Sparkles, ChevronDown, ArrowLeft, Wand2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 const Affirmations = () => {
+  const { user } = useAuth();
   const [selectedBrick, setSelectedBrick] = useState<number | undefined>(undefined);
   const [newAffirmation, setNewAffirmation] = useState("");
   const [showBuilder, setShowBuilder] = useState(false);
   const [expandedBrick, setExpandedBrick] = useState<number | null>(null);
+  const [generating, setGenerating] = useState(false);
+  const [aiResults, setAiResults] = useState<string[]>([]);
 
   const { brickAffirmations, userAffirmations, dailyAffirmation, addAffirmation, toggleFavorite, deleteAffirmation, isLoading } = useAffirmations(selectedBrick);
 
@@ -26,6 +31,48 @@ const Affirmations = () => {
     toast.success("Affirmation added 💎");
   };
 
+  const handleGenerate = async () => {
+    if (!user) return;
+    setGenerating(true);
+    setAiResults([]);
+    try {
+      // Fetch profile for context
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("transformation_choice, goals, name")
+        .eq("id", user.id)
+        .single();
+
+      const { data, error } = await supabase.functions.invoke("generate-affirmations", {
+        body: {
+          transformation_choice: profile?.transformation_choice,
+          goals: profile?.goals,
+          name: profile?.name,
+        },
+      });
+
+      if (error) throw error;
+      if (data?.error) {
+        toast.error(data.error);
+        return;
+      }
+
+      setAiResults(data.affirmations || []);
+      toast.success("Your personalized affirmations are ready ✨");
+    } catch (e) {
+      console.error(e);
+      toast.error("Couldn't generate affirmations right now");
+    } finally {
+      setGenerating(false);
+    }
+  };
+
+  const saveAiAffirmation = (text: string) => {
+    addAffirmation.mutate({ affirmation: text });
+    setAiResults((prev) => prev.filter((a) => a !== text));
+    toast.success("Saved to My Affirmations 💎");
+  };
+
   // Group brick affirmations by brick_id
   const groupedByBrick = brickAffirmations.reduce((acc, a) => {
     const key = a.brick_id;
@@ -33,8 +80,6 @@ const Affirmations = () => {
     acc[key].push(a);
     return acc;
   }, {} as Record<number, typeof brickAffirmations>);
-
-  const favoriteAffirmations = userAffirmations.filter((a) => a.is_favorite);
 
   if (isLoading) {
     return (
@@ -79,6 +124,65 @@ const Affirmations = () => {
             </div>
           </motion.div>
         )}
+
+        {/* AI Generator */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="mb-8"
+        >
+          <button
+            onClick={handleGenerate}
+            disabled={generating}
+            className="w-full flex items-center justify-center gap-3 bg-gradient-pink border border-primary/30 rounded-xl px-5 py-4 hover:shadow-[0_0_25px_hsl(var(--primary)/0.3)] transition-all disabled:opacity-60"
+          >
+            {generating ? (
+              <Loader2 className="w-5 h-5 animate-spin text-foreground" />
+            ) : (
+              <Wand2 className="w-5 h-5 text-foreground" />
+            )}
+            <span className="font-display text-sm tracking-wider">
+              {generating ? "Channeling your energy..." : "Generate My Affirmations"}
+            </span>
+          </button>
+          <p className="text-center font-body text-[10px] text-muted-foreground mt-2">
+            AI-crafted based on your goals & transformation path
+          </p>
+
+          {/* AI Results */}
+          <AnimatePresence>
+            {aiResults.length > 0 && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="mt-4 space-y-2">
+                  {aiResults.map((text, i) => (
+                    <motion.div
+                      key={text}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.1 }}
+                      className="flex items-start gap-3 bg-gradient-card border border-accent/20 rounded-xl px-4 py-3"
+                    >
+                      <Sparkles className="w-4 h-4 text-accent mt-0.5 shrink-0" />
+                      <p className="flex-1 font-body text-sm leading-relaxed">"{text}"</p>
+                      <button
+                        onClick={() => saveAiAffirmation(text)}
+                        className="shrink-0 px-3 py-1 bg-primary/20 hover:bg-primary/30 rounded-lg font-body text-[10px] text-primary uppercase tracking-wider transition-colors"
+                      >
+                        Save
+                      </button>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
 
         {/* I AM Builder */}
         <div className="mb-8">
