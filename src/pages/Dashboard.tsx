@@ -4,7 +4,17 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useLessonProgress } from "@/hooks/useLessonProgress";
 import { useDailyRitual } from "@/hooks/useDailyRitual";
+import { Blocks, Sunrise, Diamond, Flame, CalendarClock, Sparkles, type LucideIcon } from "lucide-react";
 import logo from "@/assets/brickhouse-logo.png";
+
+interface DashTile {
+  icon: LucideIcon;
+  label: string;
+  link?: string;
+  subtitle?: string;
+  accent: string;
+  iconBg: string;
+}
 
 const Dashboard = () => {
   const { user, signOut, loading } = useAuth();
@@ -56,6 +66,15 @@ const Dashboard = () => {
     ritual?.evening_reflection,
   ].filter(Boolean).length;
 
+  const tiles: DashTile[] = [
+    { icon: Blocks, label: "My Bricks", link: "/bricks", subtitle: "Explore →", accent: "text-primary", iconBg: "bg-primary/15" },
+    { icon: Sunrise, label: "Daily Ritual", link: "/daily-ritual", subtitle: todayComplete === 3 ? "Done ✓" : "Start →", accent: "text-accent", iconBg: "bg-accent/15" },
+    { icon: Diamond, label: "Affirmations", link: "/affirmations", subtitle: "Explore →", accent: "text-primary", iconBg: "bg-primary/15" },
+    { icon: Flame, label: "Passion Pick", accent: "text-destructive", iconBg: "bg-destructive/10" },
+    { icon: CalendarClock, label: "Scheduler", accent: "text-accent", iconBg: "bg-accent/10" },
+    { icon: Sparkles, label: "Goddess Rx", accent: "text-secondary", iconBg: "bg-secondary/15" },
+  ];
+
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6 py-12 text-center">
       <img
@@ -69,11 +88,8 @@ const Dashboard = () => {
       </h1>
 
       <p className="font-body text-muted-foreground max-w-md mb-4">
-        Your Brickhouse is under construction. {completedLessons.length > 0 && `${completedLessons.length} lessons completed.`}
-      </p>
-
-      <p className="font-body text-muted-foreground max-w-md mb-4">
-        Your Brickhouse is under construction. {completedLessons.length > 0 && `${completedLessons.length} lessons completed.`}
+        Your Brickhouse is under construction.{" "}
+        {completedLessons.length > 0 && `${completedLessons.length} lessons completed.`}
       </p>
 
       {/* Quick stats */}
@@ -93,57 +109,39 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-lg w-full mb-10">
-        <Link
-          to="/bricks"
-          className="bg-gradient-card border border-border rounded-xl p-4 text-center hover:border-primary/40 transition-all hover:shadow-[0_0_20px_hsl(var(--primary)/0.15)]"
-        >
-          <div className="text-2xl mb-2">🧱</div>
-          <div className="font-display text-xs tracking-wider">My Bricks</div>
-          <div className="text-[9px] text-accent mt-1 uppercase tracking-wider">
-            Explore →
-          </div>
-        </Link>
-        <Link
-          to="/daily-ritual"
-          className="bg-gradient-card border border-border rounded-xl p-4 text-center hover:border-primary/40 transition-all hover:shadow-[0_0_20px_hsl(var(--primary)/0.15)]"
-        >
-          <div className="text-2xl mb-2">🌅</div>
-          <div className="font-display text-xs tracking-wider">Daily Ritual</div>
-          <div className="text-[9px] text-accent mt-1 uppercase tracking-wider">
-            {todayComplete === 3 ? "Done ✓" : "Start →"}
-          </div>
-        </Link>
-        {[
-          { icon: "💎", label: "Affirmations", link: "/affirmations" },
-          { icon: "🔥", label: "Passion Pick" },
-          { icon: "📐", label: "Scheduler" },
-          { icon: "✨", label: "Goddess Rx" },
-        ].map((item) => (
-          "link" in item && item.link ? (
+        {tiles.map((tile) => {
+          const Icon = tile.icon;
+          const isActive = !!tile.link;
+
+          const content = (
+            <>
+              <div className={`w-11 h-11 rounded-xl ${tile.iconBg} flex items-center justify-center mx-auto mb-3`}>
+                <Icon className={`w-5 h-5 ${tile.accent}`} />
+              </div>
+              <div className="font-display text-xs tracking-wider">{tile.label}</div>
+              <div className={`text-[9px] mt-1 uppercase tracking-wider ${isActive ? "text-accent" : "text-muted-foreground"}`}>
+                {isActive ? tile.subtitle : "Coming Soon"}
+              </div>
+            </>
+          );
+
+          return isActive ? (
             <Link
-              key={item.label}
-              to={item.link}
+              key={tile.label}
+              to={tile.link!}
               className="bg-gradient-card border border-border rounded-xl p-4 text-center hover:border-primary/40 transition-all hover:shadow-[0_0_20px_hsl(var(--primary)/0.15)]"
             >
-              <div className="text-2xl mb-2">{item.icon}</div>
-              <div className="font-display text-xs tracking-wider">{item.label}</div>
-              <div className="text-[9px] text-accent mt-1 uppercase tracking-wider">Explore →</div>
+              {content}
             </Link>
           ) : (
-          <div
-            key={item.label}
-            className="bg-gradient-card border border-border rounded-xl p-4 text-center opacity-60"
-          >
-            <div className="text-2xl mb-2">{item.icon}</div>
-            <div className="font-display text-xs tracking-wider">
-              {item.label}
+            <div
+              key={tile.label}
+              className="bg-gradient-card border border-border rounded-xl p-4 text-center opacity-50"
+            >
+              {content}
             </div>
-            <div className="text-[9px] text-muted-foreground mt-1 uppercase tracking-wider">
-              Coming Soon
-            </div>
-          </div>
-          )
-        ))}
+          );
+        })}
       </div>
 
       <button
