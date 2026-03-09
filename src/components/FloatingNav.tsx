@@ -108,7 +108,7 @@ const FloatingNav = () => {
       {/* Floating pill trigger */}
       <motion.button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] w-14 h-14 rounded-full bg-gradient-pink border border-primary/30 flex items-center justify-center shadow-[0_0_30px_hsl(var(--primary)/0.4)] hover:shadow-[0_0_40px_hsl(var(--primary)/0.6)] transition-shadow"
+        className="fixed top-5 right-6 z-[100] w-12 h-12 rounded-full bg-gradient-pink border border-primary/30 flex items-center justify-center shadow-[0_0_30px_hsl(var(--primary)/0.4)] hover:shadow-[0_0_40px_hsl(var(--primary)/0.6)] transition-shadow"
         whileTap={{ scale: 0.9 }}
       >
         <AnimatePresence mode="wait">
