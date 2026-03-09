@@ -36,6 +36,14 @@ const Affirmations = () => {
 
   const favoriteAffirmations = userAffirmations.filter((a) => a.is_favorite);
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="font-display text-sm text-muted-foreground tracking-wider animate-pulse">Loading affirmations...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background px-5 py-10 pb-24">
       <div className="max-w-lg mx-auto">
