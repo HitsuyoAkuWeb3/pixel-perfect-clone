@@ -15,6 +15,7 @@ import Dashboard from "./pages/Dashboard";
 import Onboarding from "./pages/Onboarding";
 import MyBricks from "./pages/MyBricks";
 import BrickDetail from "./pages/BrickDetail";
+import DailyRitual from "./pages/DailyRitual";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -62,6 +63,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <BrickDetail />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/daily-ritual"
+              element={
+                <ProtectedRoute>
+                  <DailyRitual />
                 </ProtectedRoute>
               }
             />
