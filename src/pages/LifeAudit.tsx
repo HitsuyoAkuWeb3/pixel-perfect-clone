@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { areas } from "@/data/auditContent";
 import AuditCover from "@/components/audit/AuditCover";
@@ -9,6 +10,12 @@ import AuditQuestion from "@/components/audit/AuditQuestion";
 import AuditResults from "@/components/audit/AuditResults";
 
 type Screen = "cover" | "intro" | "quiz" | "results";
+
+const screenVariants = {
+  initial: { opacity: 0, y: 24 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
+  exit: { opacity: 0, y: -16, transition: { duration: 0.3, ease: "easeIn" } },
+};
 
 const LifeAudit = () => {
   const [searchParams] = useSearchParams();
