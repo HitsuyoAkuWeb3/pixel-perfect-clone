@@ -17,6 +17,7 @@ const authedLinks = [
   { to: "/daily-ritual", label: "Daily Ritual", icon: Sunrise },
   { to: "/affirmations", label: "Affirmations", icon: Sparkles },
   { to: "/passion-pick", label: "Passion Pick", icon: Flame },
+  { to: "/goddess-rx", label: "Goddess Rx", icon: Gem },
 ];
 
 const FloatingNav = () => {

@@ -98,6 +98,14 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/goddess-rx"
+              element={
+                <ProtectedRoute>
+                  <GoddessRx />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/contact" element={<Contact />} />
