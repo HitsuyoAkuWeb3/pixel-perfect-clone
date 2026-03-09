@@ -27,9 +27,10 @@ const LifeAudit = () => {
   const [scores, setScores] = useState<number[]>([5, 5, 5, 5, 5]);
 
   const goToScreen = useCallback((s: Screen) => {
+    if (s === "quiz") analytics.auditStarted(leadId);
     setScreen(s);
     window.scrollTo(0, 0);
-  }, []);
+  }, [leadId]);
 
   const handleScoreChange = useCallback(
     (value: number) => {
