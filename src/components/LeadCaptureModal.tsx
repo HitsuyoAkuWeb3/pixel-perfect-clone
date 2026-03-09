@@ -84,12 +84,12 @@ const LeadCaptureModal = ({
     setErrors({});
     setSubmitting(true);
 
-    const { data: insertedLead, error } = await supabase.from("leads").insert({
+    const { error } = await supabase.from("leads").insert({
       name: result.data.name,
       email: result.data.email,
       phone: result.data.phone || null,
       variant,
-    }).select("id").single();
+    });
 
     setSubmitting(false);
 
@@ -104,11 +104,7 @@ const LeadCaptureModal = ({
     if (variant === "audit") {
       setTimeout(() => {
         onOpenChange(false);
-        navigate(
-          insertedLead?.id
-            ? `/life-audit?lead=${insertedLead.id}`
-            : "/life-audit"
-        );
+        navigate("/life-audit");
       }, 1500);
     } else if (variant === "breakthrough") {
       setTimeout(() => {
