@@ -207,7 +207,12 @@ const AuditResults = ({ scores }: AuditResultsProps) => {
           </p>
 
           <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-3.5 mb-7">
-            <div className="bg-foreground/[0.04] border border-foreground/[0.08] rounded-xl p-5 text-left hover:border-primary/40 transition-colors">
+            <a
+              href="https://example.com/mini-bundle"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-foreground/[0.04] border border-foreground/[0.08] rounded-xl p-5 text-left hover:border-primary/40 transition-colors block"
+            >
               <div className="text-2xl mb-2">📖</div>
               <div className="font-extrabold text-[13px] text-accent mb-1 tracking-wide">
                 Mini Bundle — $88
@@ -215,8 +220,13 @@ const AuditResults = ({ scores }: AuditResultsProps) => {
               <p className="text-[11px] text-foreground/55 leading-relaxed">
                 Book + Audiobook + Workbook. Your complete Brickhouse blueprint.
               </p>
-            </div>
-            <div className="bg-foreground/[0.04] border border-foreground/[0.08] rounded-xl p-5 text-left hover:border-primary/40 transition-colors">
+            </a>
+            <a
+              href="https://example.com/brickhouse-collective"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-foreground/[0.04] border border-foreground/[0.08] rounded-xl p-5 text-left hover:border-primary/40 transition-colors block"
+            >
               <div className="text-2xl mb-2">🔥</div>
               <div className="font-extrabold text-[13px] text-accent mb-1 tracking-wide">
                 Brickhouse Collective
@@ -225,7 +235,7 @@ const AuditResults = ({ scores }: AuditResultsProps) => {
                 Full app access, daily rituals, community, coaching. From
                 $55/mo.
               </p>
-            </div>
+            </a>
           </div>
 
           <button className="inline-block bg-gradient-pink text-foreground font-body font-extrabold text-[13px] tracking-[2px] uppercase px-12 py-[18px] border-none cursor-pointer [clip-path:polygon(8px_0%,100%_0%,calc(100%-8px)_100%,0%_100%)] hover:opacity-90 hover:-translate-y-0.5 transition-all mb-4">
