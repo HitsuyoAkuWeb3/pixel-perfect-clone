@@ -238,9 +238,14 @@ const AuditResults = ({ scores }: AuditResultsProps) => {
             </a>
           </div>
 
-          <button className="inline-block bg-gradient-pink text-foreground font-body font-extrabold text-[13px] tracking-[2px] uppercase px-12 py-[18px] border-none cursor-pointer [clip-path:polygon(8px_0%,100%_0%,calc(100%-8px)_100%,0%_100%)] hover:opacity-90 hover:-translate-y-0.5 transition-all mb-4">
+          <a
+            href="https://example.com/mini-bundle"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-gradient-pink text-foreground font-body font-extrabold text-[13px] tracking-[2px] uppercase px-12 py-[18px] border-none cursor-pointer [clip-path:polygon(8px_0%,100%_0%,calc(100%-8px)_100%,0%_100%)] hover:opacity-90 hover:-translate-y-0.5 transition-all mb-4"
+          >
             Start Building →
-          </button>
+          </a>
 
           <p className="text-xs text-foreground/45 mt-2">
             Not ready yet?{" "}
