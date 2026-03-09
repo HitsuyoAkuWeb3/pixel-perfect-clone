@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { areas } from "@/data/auditContent";
+import { analytics } from "@/lib/analytics";
 import AuditCover from "@/components/audit/AuditCover";
 import AuditIntro from "@/components/audit/AuditIntro";
 import AuditProgress from "@/components/audit/AuditProgress";
@@ -26,9 +27,10 @@ const LifeAudit = () => {
   const [scores, setScores] = useState<number[]>([5, 5, 5, 5, 5]);
 
   const goToScreen = useCallback((s: Screen) => {
+    if (s === "quiz") analytics.auditStarted(leadId);
     setScreen(s);
     window.scrollTo(0, 0);
-  }, []);
+  }, [leadId]);
 
   const handleScoreChange = useCallback(
     (value: number) => {
@@ -48,6 +50,10 @@ const LifeAudit = () => {
     } else {
       // Save results then show
       saveResults();
+      analytics.auditCompleted({
+        self: scores[0], love: scores[1], money: scores[2],
+        purpose: scores[3], joy: scores[4],
+      });
       goToScreen("results");
     }
   }, [currentArea, scores, leadId]);
