@@ -102,23 +102,9 @@ const LeadCaptureModal = ({
     analytics.leadCaptured(variant);
 
     if (variant === "audit") {
-      // Get the inserted lead's id for linking audit results
-      const { data: leadData } = await supabase
-        .from("leads")
-        .select("id")
-        .eq("email", result.data.email)
-        .eq("variant", "audit")
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .single();
-
       setTimeout(() => {
         onOpenChange(false);
-        navigate(
-          leadData?.id
-            ? `/life-audit?lead=${leadData.id}`
-            : "/life-audit"
-        );
+        navigate("/life-audit");
       }, 1500);
     } else if (variant === "breakthrough") {
       setTimeout(() => {
