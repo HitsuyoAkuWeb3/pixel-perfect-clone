@@ -5,7 +5,6 @@ import { bricks } from "@/data/bricksContent";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Plus, Trash2, Sparkles, ChevronDown, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
-import logo from "@/assets/brickhouse-logo.png";
 
 const Affirmations = () => {
   const [selectedBrick, setSelectedBrick] = useState<number | undefined>(undefined);
