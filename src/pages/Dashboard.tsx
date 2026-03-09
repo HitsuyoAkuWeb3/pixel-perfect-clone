@@ -1,15 +1,41 @@
-import { useAuth } from "@/hooks/useAuth";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/brickhouse-logo.png";
 
 const Dashboard = () => {
-  const { user, signOut } = useAuth();
+  const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
+  const [checkingProfile, setCheckingProfile] = useState(true);
+
+  useEffect(() => {
+    if (loading || !user) return;
+
+    const checkOnboarding = async () => {
+      const { data } = await supabase
+        .from("profiles")
+        .select("transformation_choice")
+        .eq("id", user.id)
+        .single();
+
+      // If no transformation chosen, redirect to onboarding
+      if (!data?.transformation_choice) {
+        navigate("/onboarding", { replace: true });
+        return;
+      }
+      setCheckingProfile(false);
+    };
+
+    checkOnboarding();
+  }, [user, loading, navigate]);
 
   const handleSignOut = async () => {
     await signOut();
     navigate("/", { replace: true });
   };
+
+  if (loading || checkingProfile) return null;
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6 py-12 text-center">
@@ -34,12 +60,12 @@ const Dashboard = () => {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-lg w-full mb-10">
         {[
-          { icon: "🧱", label: "My Bricks", soon: true },
-          { icon: "🌅", label: "Daily Ritual", soon: true },
-          { icon: "💎", label: "Affirmations", soon: true },
-          { icon: "🔥", label: "Passion Pick", soon: true },
-          { icon: "📐", label: "Scheduler", soon: true },
-          { icon: "✨", label: "Goddess Rx", soon: true },
+          { icon: "🧱", label: "My Bricks" },
+          { icon: "🌅", label: "Daily Ritual" },
+          { icon: "💎", label: "Affirmations" },
+          { icon: "🔥", label: "Passion Pick" },
+          { icon: "📐", label: "Scheduler" },
+          { icon: "✨", label: "Goddess Rx" },
         ].map((item) => (
           <div
             key={item.label}
