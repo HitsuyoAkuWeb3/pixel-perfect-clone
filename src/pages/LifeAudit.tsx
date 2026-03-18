@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import { areas } from "@/data/auditContent";
 import { analytics } from "@/lib/analytics";
 import AuditCover from "@/components/audit/AuditCover";
@@ -19,12 +20,14 @@ const screenVariants = {
 };
 
 const LifeAudit = () => {
+  const { user } = useAuth();
   const [searchParams] = useSearchParams();
   const leadId = searchParams.get("lead");
 
   const [screen, setScreen] = useState<Screen>("cover");
   const [currentArea, setCurrentArea] = useState(0);
   const [scores, setScores] = useState<number[]>([5, 5, 5, 5, 5]);
+  const [submitting, setSubmitting] = useState(false);
 
   const goToScreen = useCallback((s: Screen) => {
     if (s === "quiz") analytics.auditStarted(leadId);
@@ -43,29 +46,7 @@ const LifeAudit = () => {
     [currentArea]
   );
 
-  const handleNext = useCallback(() => {
-    if (currentArea < areas.length - 1) {
-      setCurrentArea((c) => c + 1);
-      window.scrollTo(0, 0);
-    } else {
-      // Save results then show
-      saveResults();
-      analytics.auditCompleted({
-        self: scores[0], love: scores[1], money: scores[2],
-        purpose: scores[3], joy: scores[4],
-      });
-      goToScreen("results");
-    }
-  }, [currentArea, scores, leadId]);
-
-  const handleBack = useCallback(() => {
-    if (currentArea > 0) {
-      setCurrentArea((c) => c - 1);
-      window.scrollTo(0, 0);
-    }
-  }, [currentArea]);
-
-  const saveResults = async () => {
+  const saveResults = useCallback(async () => {
     const scoreData = {
       self: scores[0],
       love: scores[1],
@@ -78,7 +59,30 @@ const LifeAudit = () => {
       lead_id: leadId || null,
       scores: scoreData,
     });
-  };
+  }, [scores, leadId]);
+
+  const handleNext = useCallback(async () => {
+    if (currentArea < areas.length - 1) {
+      setCurrentArea((c) => c + 1);
+      window.scrollTo(0, 0);
+    } else {
+      setSubmitting(true);
+      await saveResults();
+      analytics.auditCompleted({
+        self: scores[0], love: scores[1], money: scores[2],
+        purpose: scores[3], joy: scores[4],
+      });
+      setSubmitting(false);
+      goToScreen("results");
+    }
+  }, [currentArea, scores, saveResults, goToScreen]);
+
+  const handleBack = useCallback(() => {
+    if (currentArea > 0) {
+      setCurrentArea((c) => c - 1);
+      window.scrollTo(0, 0);
+    }
+  }, [currentArea]);
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { areas, areaInsights, getLevel } from "@/data/auditContent";
 import { analytics } from "@/lib/analytics";
 
@@ -8,6 +9,7 @@ interface AuditResultsProps {
 
 const AuditResults = ({ scores }: AuditResultsProps) => {
   const fillRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -241,15 +243,39 @@ const AuditResults = ({ scores }: AuditResultsProps) => {
             </a>
           </div>
 
-          <a
-            href="https://example.com/mini-bundle"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => analytics.ctaClicked("Start Building CTA", "https://example.com/mini-bundle")}
+          <button
+            onClick={async () => {
+              analytics.ctaClicked("Start Building CTA", "Edge Bridge API");
+              try {
+                // For local dev, this would be the local Supabase Edge function
+                // In prod, this will be the deployed App B Edge function
+                const bridgeApi = import.meta.env.VITE_APP_BRIDGE_URL || 'https://app.brickhousemindset.com/api/sync-lead';
+                
+                const res = await fetch(bridgeApi, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ audit_scores: scores })
+                });
+
+                const data = await res.json();
+                
+                const appUrl = import.meta.env.VITE_APP_URL || 'https://app.brickhousemindset.com';
+                if (data.transfer_token) {
+                  window.location.href = `${appUrl}/auth?bridge=${data.transfer_token}`;
+                } else {
+                  console.error("Bridge Error:", data);
+                  window.location.href = `${appUrl}/auth`; // Fallback
+                }
+              } catch (err) {
+                console.error("Failed to bridge scores:", err);
+                const appUrl = import.meta.env.VITE_APP_URL || 'https://app.brickhousemindset.com';
+                window.location.href = `${appUrl}/auth`; // Fallback
+              }
+            }}
             className="inline-block bg-gradient-pink text-foreground font-body font-extrabold text-[13px] tracking-[2px] uppercase px-12 py-[18px] border-none cursor-pointer [clip-path:polygon(8px_0%,100%_0%,calc(100%-8px)_100%,0%_100%)] hover:opacity-90 hover:-translate-y-0.5 transition-all mb-4"
           >
             Start Building →
-          </a>
+          </button>
 
           <p className="text-xs text-foreground/45 mt-2">
             Not ready yet?{" "}
