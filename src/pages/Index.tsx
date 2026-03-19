@@ -2,6 +2,7 @@ import HeroSection from "@/components/HeroSection";
 import DualCTASection from "@/components/DualCTASection";
 import TransformationsSection from "@/components/TransformationsSection";
 import SocialProofSection from "@/components/SocialProofSection";
+import B2BWaitlistSection from "@/components/B2BWaitlistSection";
 import ScrollReveal from "@/components/ScrollReveal";
 
 const Index = () => {
@@ -17,8 +18,12 @@ const Index = () => {
       <ScrollReveal delay={0.1}>
         <SocialProofSection />
       </ScrollReveal>
+      <ScrollReveal delay={0.15}>
+        <B2BWaitlistSection />
+      </ScrollReveal>
     </div>
   );
 };
 
 export default Index;
+

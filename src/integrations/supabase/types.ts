@@ -43,6 +43,60 @@ export type Database = {
           },
         ]
       }
+      analytics_events: {
+        Row: {
+          id: string
+          user_id: string | null
+          event_type: string
+          event_data: Json
+          brick_id: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id?: string | null
+          event_type: string
+          event_data?: Json
+          brick_id?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string | null
+          event_type?: string
+          event_data?: Json
+          brick_id?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      b2b_waitlist: {
+        Row: {
+          id: string
+          email: string
+          company_name: string | null
+          role: string | null
+          status: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          email: string
+          company_name?: string | null
+          role?: string | null
+          status?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          email?: string
+          company_name?: string | null
+          role?: string | null
+          status?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
       brick_affirmations: {
         Row: {
           affirmation: string
