@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ClipboardCheck, Flame } from "lucide-react";
 import LeadCaptureModal from "@/components/LeadCaptureModal";
+import { analytics } from "@/lib/analytics";
 
 const DualCTASection = () => {
   const [modalVariant, setModalVariant] = useState<"audit" | "breakthrough">(
@@ -14,7 +15,7 @@ const DualCTASection = () => {
   };
 
   return (
-    <section className="relative px-6 py-20 md:py-28">
+    <section id="dual-cta" className="relative px-6 py-20 md:py-28">
       <div className="max-w-5xl mx-auto">
         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl text-center mb-4">
           Choose Your Starting Point
@@ -51,7 +52,10 @@ const DualCTASection = () => {
             </div>
 
             <button
-              onClick={() => openModal("audit")}
+              onClick={() => {
+                analytics.ctaClicked("Start My Audit", "/life-audit");
+                openModal("audit");
+              }}
               className="w-full py-4 px-6 rounded-xl bg-gradient-pink font-body font-semibold tracking-wide transition-all duration-300 hover:scale-[1.02] text-foreground"
             >
               Start My Audit →
@@ -85,7 +89,10 @@ const DualCTASection = () => {
             </div>
 
             <button
-              onClick={() => openModal("breakthrough")}
+              onClick={() => {
+                analytics.ctaClicked("Register Now", "/breakthrough-confirmation");
+                openModal("breakthrough");
+              }}
               className="w-full py-4 px-6 rounded-xl border-2 border-accent font-body font-semibold tracking-wide text-accent transition-all duration-300 hover:bg-accent hover:text-accent-foreground hover:scale-[1.02]"
             >
               Register Now →

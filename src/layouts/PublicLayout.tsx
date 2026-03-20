@@ -3,7 +3,7 @@ import LandingFooter from "../components/LandingFooter";
 
 export default function PublicLayout() {
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-brand-red/30">
+    <div className="min-h-screen bg-background text-foreground selection:bg-primary/30">
       <main className="relative z-10">
         <Outlet />
       </main>

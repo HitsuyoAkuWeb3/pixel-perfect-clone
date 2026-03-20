@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import logo from "@/assets/brickhouse-logo.png";
-import LandingFooter from "@/components/LandingFooter";
 import ScrollReveal from "@/components/ScrollReveal";
 import { analytics } from "@/lib/analytics";
 
@@ -203,8 +202,6 @@ const Coaching = () => {
           </div>
         </section>
       </ScrollReveal>
-
-      <LandingFooter />
     </div>
   );
 };

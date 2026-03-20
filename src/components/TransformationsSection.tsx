@@ -66,7 +66,20 @@ const TransformationsSection = () => {
             return (
               <div
                 key={t.title}
-                className={`group rounded-2xl bg-gradient-card border border-border p-8 transition-all duration-500 ${styles.border} hover:shadow-card hover:-translate-y-1`}
+                className={`group rounded-2xl bg-gradient-card border border-border p-8 transition-all duration-500 ${styles.border} hover:shadow-card hover:-translate-y-1 cursor-pointer`}
+                onClick={() =>
+                  document
+                    .getElementById("dual-cta")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter")
+                    document
+                      .getElementById("dual-cta")
+                      ?.scrollIntoView({ behavior: "smooth" });
+                }}
               >
                 <div
                   className={`w-14 h-14 rounded-xl ${styles.iconBg} flex items-center justify-center mb-6`}

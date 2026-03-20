@@ -8,6 +8,8 @@ const B2BWaitlistSection = () => {
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
   const [role, setRole] = useState("");
+  const [contactName, setContactName] = useState("");
+  const [companySize, setCompanySize] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -24,6 +26,8 @@ const B2BWaitlistSection = () => {
         email,
         company_name: company,
         role: role || null,
+        contact_name: contactName || null,
+        company_size: companySize || null,
       });
 
       if (error) {
@@ -167,6 +171,54 @@ const B2BWaitlistSection = () => {
                   disabled={isLoading}
                   className="w-full bg-input border border-border rounded-xl px-4 py-3 font-body text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors disabled:opacity-50"
                 />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="b2b-contact"
+                  className="font-body text-sm text-foreground block mb-1.5"
+                >
+                  Contact Name{" "}
+                  <span className="text-muted-foreground font-normal">
+                    (optional)
+                  </span>
+                </label>
+                <input
+                  id="b2b-contact"
+                  type="text"
+                  placeholder="e.g. Jane Smith"
+                  value={contactName}
+                  onChange={(e) => setContactName(e.target.value)}
+                  maxLength={100}
+                  disabled={isLoading}
+                  className="w-full bg-input border border-border rounded-xl px-4 py-3 font-body text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary transition-colors disabled:opacity-50"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="b2b-size"
+                  className="font-body text-sm text-foreground block mb-1.5"
+                >
+                  Company Size{" "}
+                  <span className="text-muted-foreground font-normal">
+                    (optional)
+                  </span>
+                </label>
+                <select
+                  id="b2b-size"
+                  value={companySize}
+                  onChange={(e) => setCompanySize(e.target.value)}
+                  disabled={isLoading}
+                  className="w-full bg-input border border-border rounded-xl px-4 py-3 font-body text-sm text-foreground focus:outline-none focus:border-primary transition-colors disabled:opacity-50"
+                >
+                  <option value="">Select size…</option>
+                  <option value="10-50">10–50 employees</option>
+                  <option value="51-200">51–200 employees</option>
+                  <option value="201-500">201–500 employees</option>
+                  <option value="500+">500+ employees</option>
+                </select>
               </div>
             </div>
 

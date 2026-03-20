@@ -2,6 +2,7 @@ import HeroSection from "@/components/HeroSection";
 import DualCTASection from "@/components/DualCTASection";
 import TransformationsSection from "@/components/TransformationsSection";
 import SocialProofSection from "@/components/SocialProofSection";
+import FounderSection from "@/components/FounderSection";
 import B2BWaitlistSection from "@/components/B2BWaitlistSection";
 import ScrollReveal from "@/components/ScrollReveal";
 
@@ -17,6 +18,9 @@ const Index = () => {
       </ScrollReveal>
       <ScrollReveal delay={0.1}>
         <SocialProofSection />
+      </ScrollReveal>
+      <ScrollReveal delay={0.1}>
+        <FounderSection />
       </ScrollReveal>
       <ScrollReveal delay={0.15}>
         <B2BWaitlistSection />

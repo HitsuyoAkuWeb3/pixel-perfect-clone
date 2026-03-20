@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { analytics } from "@/lib/analytics";
+import { getUTMParams } from "@/lib/utm";
 import {
   Dialog,
   DialogContent,
@@ -89,6 +90,7 @@ const LeadCaptureModal = ({
       email: result.data.email,
       phone: result.data.phone || null,
       variant,
+      ...getUTMParams(),
     });
 
     setSubmitting(false);
@@ -97,6 +99,17 @@ const LeadCaptureModal = ({
       setErrors({ email: "Something went wrong. Please try again." });
       return;
     }
+
+    // Sync to Mailchimp (fire-and-forget — never blocks UI)
+    supabase.functions
+      .invoke("sync-lead-mailchimp", {
+        body: {
+          name: result.data.name,
+          email: result.data.email,
+          variant,
+        },
+      })
+      .catch(console.error);
 
     setSubmitted(true);
     analytics.leadCaptured(variant);
