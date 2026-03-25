@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      analytics_events: {
+        Row: {
+          created_at: string
+          event_data: Json | null
+          event_type: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_data?: Json | null
+          event_type: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_data?: Json | null
+          event_type?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       audit_results: {
         Row: {
           created_at: string
@@ -42,6 +66,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      b2b_waitlist: {
+        Row: {
+          company_name: string
+          company_size: string | null
+          contact_name: string | null
+          created_at: string
+          email: string
+          id: string
+          role: string | null
+        }
+        Insert: {
+          company_name: string
+          company_size?: string | null
+          contact_name?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          role?: string | null
+        }
+        Update: {
+          company_name?: string
+          company_size?: string | null
+          contact_name?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          role?: string | null
+        }
+        Relationships: []
       }
       brick_affirmations: {
         Row: {
@@ -245,6 +299,8 @@ export type Database = {
           goals: string[] | null
           id: string
           name: string | null
+          shopify_customer_id: string | null
+          subscription_tier: string
           transformation_choice: string | null
           updated_at: string
         }
@@ -257,6 +313,8 @@ export type Database = {
           goals?: string[] | null
           id: string
           name?: string | null
+          shopify_customer_id?: string | null
+          subscription_tier?: string
           transformation_choice?: string | null
           updated_at?: string
         }
@@ -269,6 +327,8 @@ export type Database = {
           goals?: string[] | null
           id?: string
           name?: string | null
+          shopify_customer_id?: string | null
+          subscription_tier?: string
           transformation_choice?: string | null
           updated_at?: string
         }
