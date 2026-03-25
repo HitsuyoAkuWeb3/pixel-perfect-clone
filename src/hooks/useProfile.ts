@@ -3,7 +3,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import type { Database } from "@/integrations/supabase/types";
 
-// Temporarily declaring the type here since we haven't regenerated types yet
 export type SubscriptionTier = 'free' | 'foundation' | 'brickhouse' | 'goddess' | 'coaching';
 
 export interface Profile {
