@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      analytics_events: {
+        Row: {
+          created_at: string
+          event_data: Json | null
+          event_type: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_data?: Json | null
+          event_type: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_data?: Json | null
+          event_type?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       audit_results: {
         Row: {
           created_at: string
@@ -43,57 +67,33 @@ export type Database = {
           },
         ]
       }
-      analytics_events: {
-        Row: {
-          id: string
-          user_id: string | null
-          event_type: string
-          event_data: Json
-          brick_id: string | null
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          user_id?: string | null
-          event_type: string
-          event_data?: Json
-          brick_id?: string | null
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          user_id?: string | null
-          event_type?: string
-          event_data?: Json
-          brick_id?: string | null
-          created_at?: string
-        }
-        Relationships: []
-      }
       b2b_waitlist: {
         Row: {
-          id: string
-          email: string
-          company_name: string | null
-          role: string | null
-          status: string
+          company_name: string
+          company_size: string | null
+          contact_name: string | null
           created_at: string
+          email: string
+          id: string
+          role: string | null
         }
         Insert: {
-          id?: string
-          email: string
-          company_name?: string | null
-          role?: string | null
-          status?: string
+          company_name: string
+          company_size?: string | null
+          contact_name?: string | null
           created_at?: string
+          email: string
+          id?: string
+          role?: string | null
         }
         Update: {
-          id?: string
-          email?: string
-          company_name?: string | null
-          role?: string | null
-          status?: string
+          company_name?: string
+          company_size?: string | null
+          contact_name?: string | null
           created_at?: string
+          email?: string
+          id?: string
+          role?: string | null
         }
         Relationships: []
       }
@@ -299,6 +299,8 @@ export type Database = {
           goals: string[] | null
           id: string
           name: string | null
+          shopify_customer_id: string | null
+          subscription_tier: string
           transformation_choice: string | null
           updated_at: string
         }
@@ -311,6 +313,8 @@ export type Database = {
           goals?: string[] | null
           id: string
           name?: string | null
+          shopify_customer_id?: string | null
+          subscription_tier?: string
           transformation_choice?: string | null
           updated_at?: string
         }
@@ -323,6 +327,8 @@ export type Database = {
           goals?: string[] | null
           id?: string
           name?: string | null
+          shopify_customer_id?: string | null
+          subscription_tier?: string
           transformation_choice?: string | null
           updated_at?: string
         }
