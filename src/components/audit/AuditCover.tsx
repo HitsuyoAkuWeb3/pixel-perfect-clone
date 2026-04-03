@@ -17,7 +17,7 @@ const AuditCover = ({ onStart }: AuditCoverProps) => {
           <img
             src={brickhouseLogo}
             alt="Brickhouse Mindset"
-            className="w-[clamp(280px,75vw,480px)] mx-auto opacity-95 drop-shadow-[0_0_40px_hsl(330_100%_42%/0.65)]"
+            className="w-[clamp(280px,75vw,480px)] mx-auto opacity-95"
           />
         </div>
 

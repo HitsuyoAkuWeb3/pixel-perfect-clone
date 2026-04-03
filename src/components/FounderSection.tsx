@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import cheImage from "@/assets/che-lovelight.png";
 
 const FounderSection = () => {
   return (
@@ -9,18 +10,10 @@ const FounderSection = () => {
 
       <div className="max-w-3xl mx-auto">
         <div className="grid md:grid-cols-[280px_1fr] gap-10 items-start">
-          {/* Photo placeholder */}
+          {/* Photo */}
           <div className="mx-auto md:mx-0">
             <div className="w-64 h-80 rounded-2xl bg-gradient-card border border-border overflow-hidden flex items-center justify-center">
-              {/* Replace with Che's photo when provided */}
-              <div className="text-center px-6">
-                <p className="font-display text-5xl mb-3 text-gradient-pink">
-                  CL
-                </p>
-                <p className="font-body text-xs text-muted-foreground tracking-widest uppercase">
-                  Photo Coming Soon
-                </p>
-              </div>
+              <img src={cheImage} alt="Che' Lovelight" className="w-full h-full object-cover" />
             </div>
           </div>
 

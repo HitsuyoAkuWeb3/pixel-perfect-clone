@@ -108,7 +108,7 @@ const Auth = () => {
         <img
           src={logo}
           alt="Brickhouse Mindset"
-          className="w-48 mx-auto mb-8 drop-shadow-[0_0_30px_hsl(330_100%_42%/0.4)]"
+          className="w-48 mx-auto mb-8"
         />
 
         <h1 className="font-display text-3xl text-center mb-1 tracking-wider">
