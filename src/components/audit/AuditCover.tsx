@@ -1,4 +1,4 @@
-import brickhouseLogo from "@/assets/brickhouse-logo.png";
+import brickhouseLogo from "@/assets/BHhres-white.png";
 
 interface AuditCoverProps {
   onStart: () => void;

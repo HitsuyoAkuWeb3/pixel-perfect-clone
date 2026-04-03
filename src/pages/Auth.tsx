@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
 import { z } from "zod";
-import logo from "@/assets/brickhouse-logo.png";
+import logo from "@/assets/BHhres-white.png";
 import { toast } from "sonner";
 
 type Mode = "login" | "signup" | "forgot";

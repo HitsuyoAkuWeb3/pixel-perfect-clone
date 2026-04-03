@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import logo from "@/assets/brickhouse-logo.png";
+import logo from "@/assets/BHhres-white.png";
 import ScrollReveal from "@/components/ScrollReveal";
 import { analytics } from "@/lib/analytics";
 
