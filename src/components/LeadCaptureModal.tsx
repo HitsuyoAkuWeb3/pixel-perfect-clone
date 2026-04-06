@@ -111,6 +111,21 @@ const LeadCaptureModal = ({
       })
       .catch(console.error);
 
+    // Send admin alert via Resend (fire-and-forget)
+    supabase.functions
+      .invoke("send-admin-alert", {
+        body: {
+          type: "lead_capture",
+          data: {
+            name: result.data.name,
+            email: result.data.email,
+            phone: result.data.phone || "",
+            variant,
+          },
+        },
+      })
+      .catch((err) => console.error("Admin alert error:", err));
+
     setSubmitted(true);
     analytics.leadCaptured(variant);
 

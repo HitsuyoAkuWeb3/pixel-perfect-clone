@@ -68,10 +68,23 @@ const LifeAudit = () => {
     } else {
       setSubmitting(true);
       await saveResults();
-      analytics.auditCompleted({
+      
+      const auditScoreData = {
         self: scores[0], love: scores[1], money: scores[2],
         purpose: scores[3], joy: scores[4],
-      });
+      };
+
+      // Send admin alert via Resend (fire-and-forget)
+      supabase.functions
+        .invoke("send-admin-alert", {
+          body: {
+            type: "life_audit",
+            data: auditScoreData,
+          },
+        })
+        .catch((err) => console.error("Admin alert error:", err));
+
+      analytics.auditCompleted(auditScoreData);
       setSubmitting(false);
       goToScreen("results");
     }
