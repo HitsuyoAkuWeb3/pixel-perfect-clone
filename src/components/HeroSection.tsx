@@ -1,17 +1,9 @@
 import logo from "@/assets/BHhres-white.png";
-import heroImage from "@/assets/hero-image.jpg";
-
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 py-20 overflow-hidden">
-      {/* Background image with overlay */}
-      <div className="absolute inset-0">
-        <img
-          src={heroImage}
-          alt=""
-          className="w-full h-full object-cover opacity-30"
-        />
-        <div className="absolute inset-0 bg-gradient-hero" />
+      {/* Background overlay (Glow only, global background handles image) */}
+      <div className="absolute inset-0 pointer-events-none">
         {/* Pink radial glow */}
         <div
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[70%]"
