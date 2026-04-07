@@ -5,17 +5,10 @@ import SocialProofSection from "@/components/SocialProofSection";
 import FounderSection from "@/components/FounderSection";
 import B2BWaitlistSection from "@/components/B2BWaitlistSection";
 import ScrollReveal from "@/components/ScrollReveal";
-import pageBg from "@/assets/Body.jpeg";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-transparent overflow-x-hidden relative">
-      <div 
-        className="fixed inset-0 z-[0] bg-cover bg-center pointer-events-none"
-        style={{ backgroundImage: `url(${pageBg})` }}
-      >
-        <div className="absolute inset-0 bg-background/80" />
-      </div>
+    <div className="min-h-screen bg-transparent w-full">
       
       <div className="relative z-10 pt-0">
         <HeroSection />
