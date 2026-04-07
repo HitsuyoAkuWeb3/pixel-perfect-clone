@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { areas, areaInsights, getLevel } from "@/data/auditContent";
 import { analytics } from "@/lib/analytics";
+import { useOnboardingStore } from "@/store/onboardingStore";
 
 interface AuditResultsProps {
   scores: number[];
@@ -10,6 +11,7 @@ interface AuditResultsProps {
 const AuditResults = ({ scores }: AuditResultsProps) => {
   const fillRefs = useRef<(HTMLDivElement | null)[]>([]);
   const navigate = useNavigate();
+  const { leadEmail, leadName } = useOnboardingStore();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -254,14 +256,14 @@ const AuditResults = ({ scores }: AuditResultsProps) => {
                 const res = await fetch(bridgeApi, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ audit_scores: scores })
+                  body: JSON.stringify({ email: leadEmail, name: leadName, audit_scores: scores })
                 });
 
                 const data = await res.json();
                 
                 const appUrl = import.meta.env.VITE_APP_URL || 'https://app.brickhousemindset.com';
-                if (data.transfer_token) {
-                  window.location.href = `${appUrl}/auth?bridge=${data.transfer_token}`;
+                if (data.success && leadEmail) {
+                  window.location.href = `${appUrl}/auth?email=${encodeURIComponent(leadEmail)}`;
                 } else {
                   console.error("Bridge Error:", data);
                   window.location.href = `${appUrl}/auth`; // Fallback

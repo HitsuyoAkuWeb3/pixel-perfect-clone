@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { useOnboardingStore } from "@/store/onboardingStore";
 
 const leadSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -128,6 +129,9 @@ const LeadCaptureModal = ({
 
     setSubmitted(true);
     analytics.leadCaptured(variant);
+
+    // Save lead details into the global store so they survive the transition to the audit
+    useOnboardingStore.getState().setLead(result.data.name, result.data.email);
 
     if (variant === "audit") {
       setTimeout(() => {
